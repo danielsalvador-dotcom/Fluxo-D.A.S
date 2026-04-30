@@ -198,6 +198,15 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
 </head>
 <body>
 
+<div id="onboarding" style="position:fixed;inset:0;background:#080810;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center">
+  <div style="font-size:52px;margin-bottom:16px">💸</div>
+  <div style="font-size:32px;font-weight:700;letter-spacing:-1px;margin-bottom:6px;color:#a594ff">Fluxo D.A.S</div>
+  <div style="font-size:14px;color:#4a4a6a;margin-bottom:36px;line-height:1.6">Seu assistente financeiro pessoal.<br>Como podemos te chamar?</div>
+  <input id="ob-name" style="width:100%;padding:16px 18px;border-radius:16px;border:1.5px solid rgba(255,255,255,.13);background:#181826;color:#ededf5;font-family:inherit;font-size:17px;outline:none;text-align:center;margin-bottom:12px;box-sizing:border-box" placeholder="Seu nome" maxlength="30" oninput="obCheck()" onkeydown="if(event.key==='Enter')obStart()">
+  <button id="ob-btn" onclick="obStart()" disabled style="width:100%;padding:16px;border-radius:16px;border:none;background:#7c6aff;color:#fff;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;opacity:.35">Começar →</button>
+  <div style="font-size:12px;color:#4a4a6a;margin-top:16px;line-height:1.6">Seus dados ficam salvos apenas no seu celular.<br>Ninguém mais tem acesso.</div>
+</div>
+
 <div id="ctx-bar">
   <button class="ctx-chip active" id="ctx-normal" onclick="setCtx('normal')">📊 Geral</button>
   <button onclick="openMov('mov-trip')" style="flex-shrink:0;padding:5px 12px;border-radius:20px;border:1px dashed rgba(255,255,255,.15);background:none;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--sans)">＋ Viagem</button>
@@ -1145,7 +1154,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelect
 // ══════════════════════════════════════════════
 function obCheck(){
   const v = document.getElementById('ob-name').value.trim();
-  document.getElementById('ob-btn').disabled = !v;
+  const btn = document.getElementById('ob-btn');
+  btn.disabled = !v;
+  btn.style.opacity = v ? '1' : '.35';
 }
 
 function obStart(){
