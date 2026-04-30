@@ -408,6 +408,14 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
     <button class="btn btn-danger" onclick="clearAll()">🗑️ Apagar tudo</button>
   </div>
 
+  <div class="sdiv">👤 Conta</div>
+  <div class="card">
+    <div class="flex-between">
+      <div><div style="font-size:14px;font-weight:500" id="cfg-username-lbl">Meu nome</div><div style="font-size:12px;color:var(--text3)">Toque para trocar</div></div>
+      <button class="btn btn-ghost btn-sm" onclick="resetName()">Trocar nome</button>
+    </div>
+  </div>
+
   <div class="sdiv">📱 Instalar como app</div>
   <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
     <b style="color:var(--text)">iPhone:</b> Safari → Compartilhar → Adicionar à Tela Inicial<br>
@@ -1074,6 +1082,10 @@ function renderCoach(){
 // CONFIG
 // ══════════════════════════════════════════════
 function renderCfg(){
+  const n=localStorage.getItem('fin_username')||'–';
+  const ul=document.getElementById('cfg-username-lbl');
+  if(ul) ul.textContent='Olá, '+n;
+
   // Receitas
   const rel=document.getElementById('receitas-list');
   if(rel){const m=startMonth();const mes=RECS.filter(r=>r.date>=m);rel.innerHTML=mes.length?mes.slice().reverse().map(r=>`<div class="tx-item"><div class="tx-icon" style="background:rgba(34,208,122,.15)">${RECICONS[r.tipo]||'💰'}</div><div class="tx-info"><div class="tx-desc">${r.desc}</div><div class="tx-meta">${r.tipo} · ${fmtD(r.date)}</div></div><div class="tx-amt green">${fmt(r.val)}</div><div class="tx-del" onclick="delRec('${r.id}')">✕</div></div>`).join(''):'<div class="empty">Nenhuma receita este mês</div>'}
@@ -1116,7 +1128,7 @@ function exportXLSX(){
     XLSX.writeFile(wb,`fin_DA_${today()}.xlsx`);
   };document.head.appendChild(s);
 }
-function clearAll(){if(!confirm('⚠️ Apagar TODOS os dados?'))return;TXS=[];TRIPS=[];RECS=[];FIXAS=[];GOALS=[];CATS=JSON.parse(JSON.stringify(DEFAULT_CATS));CHIPS=['☕ café 8','🍽️ almoço 45','🚗 uber 32 pix','🛒 mercado 120','💊 farmácia 35'];['fin_txs','fin_trips','fin_recs','fin_fixas','fin_goals','fin_cats','fin_chips'].forEach(k=>localStorage.removeItem(k));CTX='normal';renderCtxBar();renderAll()}
+function clearAll(){if(!confirm('⚠️ Apagar TODOS os dados?'))return;TXS=[];TRIPS=[];RECS=[];FIXAS=[];GOALS=[];CATS=JSON.parse(JSON.stringify(DEFAULT_CATS));CHIPS=['☕ café 8','🍽️ almoço 45','🚗 uber 32 pix','🛒 mercado 120','💊 farmácia 35'];['fin_txs','fin_trips','fin_recs','fin_fixas','fin_goals','fin_cats','fin_chips','fin_username'].forEach(k=>localStorage.removeItem(k));CTX='normal';renderCtxBar();renderAll();location.reload()}
 
 // ══════════════════════════════════════════════
 // NAVIGATION / MODAL
@@ -1153,6 +1165,12 @@ function applyUsername(name){
   document.title = 'Fluxo D.A.S · ' + name;
   // Update dash greeting area subtitle branding
   window._username = name;
+}
+
+function resetName(){
+  if(!confirm('Trocar o nome vai reiniciar o app. Seus dados serão apagados. Continuar?')) return;
+  ['fin_txs','fin_trips','fin_recs','fin_fixas','fin_goals','fin_cats','fin_chips','fin_username'].forEach(k=>localStorage.removeItem(k));
+  location.reload();
 }
 
 function checkOnboarding(){
