@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Fluxo D.A.S">
+<meta name="apple-mobile-web-app-title" content="Fin · DA">
 <meta name="theme-color" content="#080810">
-<title>Fluxo D.A.S</title>
+<title>Financeiro · Daniel Aloisio</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -21,7 +21,7 @@
   --blue:#4a9eff;--blue-bg:rgba(74,158,255,.1);
   --sans:'DM Sans',system-ui,sans-serif;
   --mono:'DM Mono',monospace;
-  --tab-h:64px;--ctx-h:44px;
+  --tab-h:64px;
   --safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
 }
@@ -42,7 +42,16 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
 
 #ctx-bar{position:fixed;top:0;left:0;right:0;z-index:90;height:var(--ctx-h);background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;padding:0 14px;overflow-x:auto;scrollbar-width:none;padding-top:var(--safe-t)}
 #ctx-bar::-webkit-scrollbar{display:none}
-.ctx-chip{flex-shrink:0;padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--sans);white-space:nowrap;transition:all .15s}
+.ctx-chip{
+  flex-shrink:0;padding:6px 14px;border-radius:20px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.07);
+  color:rgba(255,255,255,.55);
+  font-size:12px;font-weight:500;cursor:pointer;
+  font-family:var(--sans);white-space:nowrap;transition:all .2s;
+  min-height:32px;display:flex;align-items:center;
+}
+.ctx-chip.active{background:var(--acc);color:#fff;border-color:var(--acc)}
 .ctx-chip.active{background:var(--acc);color:#fff;border-color:var(--acc)}
 
 .phdr{
@@ -160,10 +169,10 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
 /* REGISTRO INTELIGENTE */
 .reg-box{background:var(--bg1);border:1px solid var(--border2);border-radius:20px;padding:16px;margin-bottom:14px;position:relative}
 .reg-box.focus{border-color:var(--acc)}
-.reg-inp{width:100%;background:transparent;border:none;outline:none;font-family:var(--sans);font-size:16px;color:var(--text);resize:none;line-height:1.4;min-height:48px;max-height:100px}
+.reg-inp{width:100%;background:transparent;border:none;outline:none;font-family:var(--sans);font-size:16px;color:var(--text);resize:none;line-height:1.4;min-height:48px;max-height:100px;-webkit-appearance:none}
 .reg-inp::placeholder{color:var(--text3)}
-.reg-row{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
-.reg-tag{padding:5px 11px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap;transition:all .15s}
+.reg-row{display:flex;align-items:center;gap:6px;margin-top:12px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.reg-tag{padding:5px 9px;border-radius:20px;font-size:11px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap;transition:all .15s}
 .reg-tag.sel{border-color:var(--acc);background:var(--acc-bg);color:var(--acc2)}
 .reg-send{margin-left:auto;width:40px;height:40px;border-radius:50%;border:none;background:var(--acc);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .15s}
 .reg-send:disabled{opacity:.3}
@@ -185,7 +194,13 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
 
 .mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:flex-end;backdrop-filter:blur(6px)}
 .mov.open{display:flex}
-.modal{background:var(--bg1);border-radius:24px 24px 0 0;padding:20px 20px calc(20px + var(--safe-b));width:100%;max-height:88vh;overflow-y:auto;border-top:1px solid var(--border2)}
+.modal{
+  background:var(--bg1);
+  border-radius:24px 24px 0 0;
+  padding:20px 20px calc(20px + var(--safe-b));
+  width:100%;max-height:90vh;overflow-y:auto;
+  border-top:1px solid var(--border2);
+}
 .mhandle{width:36px;height:4px;background:var(--bg3);border-radius:2px;margin:-6px auto 18px}
 .mtitle{font-size:18px;font-weight:600;margin-bottom:18px}
 
@@ -218,43 +233,32 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
 .cmp-val{font-size:12px;font-family:var(--mono);color:var(--text);min-width:72px;text-align:right;flex-shrink:0}
 .cmp-diff{font-size:11px;min-width:42px;text-align:right;flex-shrink:0;font-weight:600}
 
-/* ONBOARDING */
-#onboarding{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center}
-#onboarding.hidden{display:none}
-.ob-logo{font-size:52px;margin-bottom:16px}
-.ob-title{font-size:32px;font-weight:700;letter-spacing:-1px;margin-bottom:6px;background:linear-gradient(135deg,var(--acc2),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.ob-sub{font-size:14px;color:var(--text3);margin-bottom:36px;line-height:1.6}
-.ob-inp{width:100%;padding:16px 18px;border-radius:16px;border:1.5px solid var(--border2);background:var(--bg2);color:var(--text);font-family:var(--sans);font-size:17px;outline:none;text-align:center;transition:border-color .2s;margin-bottom:12px}
-.ob-inp:focus{border-color:var(--acc)}
-.ob-inp::placeholder{color:var(--text3)}
-.ob-btn{width:100%;padding:16px;border-radius:16px;border:none;background:var(--acc);color:#fff;font-family:var(--sans);font-size:16px;font-weight:600;cursor:pointer;transition:opacity .15s}
-.ob-btn:disabled{opacity:.35}
-.ob-hint{font-size:12px;color:var(--text3);margin-top:16px;line-height:1.6}
+/* EDIT TX MODAL */
+.edit-field{margin-bottom:12px}
+.edit-field label{display:block;font-size:12px;color:var(--text3);font-weight:500;margin-bottom:5px;letter-spacing:.02em}
+.edit-field input,.edit-field select,.edit-field textarea{width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-family:var(--sans);font-size:15px;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.edit-field input:focus,.edit-field select:focus{border-color:var(--acc)}
+.edit-actions{display:flex;gap:8px;margin-top:16px}
+.edit-actions .btn{flex:1;margin-bottom:0}
+.tx-edit-btn{padding:4px 10px;border-radius:8px;border:1px solid var(--border2);background:none;color:var(--text2);font-size:11px;cursor:pointer;font-family:var(--sans);margin-right:4px;transition:all .15s}
+.tx-edit-btn:active{background:var(--acc-bg);color:var(--acc2);border-color:var(--acc)}
 </style>
 </head>
 <body>
 
-<div id="onboarding" style="position:fixed;inset:0;background:#080810;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;transition:opacity .3s">
-  <div style="font-size:52px;margin-bottom:16px">💸</div>
-  <div style="font-size:32px;font-weight:700;letter-spacing:-1px;margin-bottom:6px;color:#a594ff">Fluxo D.A.S</div>
-  <div style="font-size:14px;color:#4a4a6a;margin-bottom:36px;line-height:1.6">Seu assistente financeiro pessoal.<br>Como podemos te chamar?</div>
-  <input id="ob-name" type="text" autocomplete="given-name" style="width:100%;padding:16px 18px;border-radius:16px;border:1.5px solid rgba(255,255,255,.13);background:#181826;color:#ededf5;font-family:inherit;font-size:17px;outline:none;text-align:center;margin-bottom:12px;box-sizing:border-box" placeholder="Seu nome" maxlength="30" oninput="obCheck()" onkeydown="if(event.key==='Enter')obStart()">
-  <button id="ob-btn" onclick="obStart()" disabled style="width:100%;padding:16px;border-radius:16px;border:none;background:#7c6aff;color:#fff;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;opacity:.35">Começar →</button>
-  <div style="font-size:12px;color:#4a4a6a;margin-top:16px;line-height:1.6">Seus dados ficam salvos apenas no seu celular.<br>Ninguém mais tem acesso.</div>
-</div>
 
-<div id="ctx-bar">
-  <button class="ctx-chip active" id="ctx-normal" onclick="setCtx('normal')">📊 Geral</button>
-  <button onclick="openMov('mov-trip')" style="flex-shrink:0;padding:5px 12px;border-radius:20px;border:1px dashed rgba(255,255,255,.15);background:none;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--sans)">＋ Viagem</button>
-</div>
 
 <!-- ══ DASHBOARD ══ -->
 <div class="page active" id="page-dash">
 <div class="pi">
   <div class="phdr">
-    <div class="phdr-eye" id="app-eyebrow">Fluxo D.A.S</div>
+    <div class="phdr-eye">Financeiro · Daniel Aloisio</div>
     <div class="phdr-title" id="dash-title">Bom dia 👋</div>
     <div class="phdr-sub" id="dash-sub"></div>
+    <div id="ctx-bar">
+      <button class="ctx-chip active" id="ctx-normal" onclick="setCtx('normal')">📊 Geral</button>
+      <button onclick="openMov('mov-trip')" style="flex-shrink:0;padding:6px 14px;border-radius:20px;border:1px dashed rgba(255,255,255,.2);background:none;color:rgba(255,255,255,.35);font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap;min-height:32px">＋ Viagem</button>
+    </div>
   </div>
 
   <!-- REGISTRO INTELIGENTE -->
@@ -262,10 +266,12 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
     <textarea class="reg-inp" id="reg-inp" placeholder="45 almoço · uber 32 pix · gastei 120 mercado ontem · 50 farmácia débito Nubank..." rows="2" oninput="onRegInp(this)" onkeydown="regKey(event)"></textarea>
     <div class="reg-preview" id="reg-preview"></div>
     <div class="reg-row">
-      <button class="reg-tag sel" id="pay-credito" onclick="selPay('credito')">💳 Crédito</button>
-      <button class="reg-tag" id="pay-debito" onclick="selPay('debito')">🏧 Débito</button>
+      <button class="reg-tag sel" id="pay-credito" onclick="selPay('credito')">💳 Créd.</button>
+      <button class="reg-tag" id="pay-debito" onclick="selPay('debito')">🏧 Déb.</button>
       <button class="reg-tag" id="pay-pix" onclick="selPay('pix')">⚡ Pix</button>
-      <button class="reg-tag" id="pay-dinheiro" onclick="selPay('dinheiro')">💵 Dinheiro</button>
+      <button class="reg-tag" id="pay-dinheiro" onclick="selPay('dinheiro')">💵 Din.</button>
+      <button id="date-chip" onclick="openDatePicker()" style="padding:5px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;font-family:var(--sans);white-space:nowrap;display:flex;align-items:center;gap:4px;flex-shrink:0">📅 <span id="date-chip-lbl">Hoje</span></button>
+      <input type="date" id="reg-date-inp" style="position:fixed;opacity:0;pointer-events:none;width:1px;height:1px;top:0;left:0" onchange="onDateChange(this.value)">
       <button class="reg-send" id="reg-send" onclick="doReg()" disabled>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
@@ -453,14 +459,6 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
     <button class="btn btn-danger" onclick="clearAll()">🗑️ Apagar tudo</button>
   </div>
 
-  <div class="sdiv">👤 Conta</div>
-  <div class="card">
-    <div class="flex-between">
-      <div><div style="font-size:14px;font-weight:500" id="cfg-username-lbl">Meu nome</div><div style="font-size:12px;color:var(--text3)">Toque para trocar</div></div>
-      <button class="btn btn-ghost btn-sm" onclick="resetName()">Trocar nome</button>
-    </div>
-  </div>
-
   <div class="sdiv">📱 Instalar como app</div>
   <div class="card" style="font-size:13px;color:var(--text2);line-height:1.9">
     <b style="color:var(--text)">iPhone:</b> Safari → Compartilhar → Adicionar à Tela Inicial<br>
@@ -563,18 +561,69 @@ const PAYICONS={credito:'💳',debito:'🏧',pix:'⚡',dinheiro:'💵',outros:'�
 const RECICONS={salario:'💼',freela:'🎨',investimento:'📈',outro:'📌'};
 
 const DEFAULT_CATS=[
-  {id:'alimentacao',label:'Alimentação',icon:'🍽️',color:'#22d07a',subs:['Delivery','Restaurante','Mercado','Lanche','Bebida','Padaria'],keys:['almoço','almoco','jantar','café da manhã','cafe da manha','café','cafe','lanche','refeição','refeicao','comida','marmita','marmitex','quentinha','prato','pf','salgado','salgados','salgadinho','coxinha','esfiha','esfirra','kibi','kibe','pastel','caldo','sopão','sopao','sopa','sanduíche','sanduiche','wrap','tapioca','crepe','waffle','panqueca','quibe','cuscuz','espetinho','churrasquinho','pão de queijo','pao de queijo','pão','pao','baguete','torrada','restaurante','lanchonete','cantina','bistrô','bistro','pizzaria','hamburgueria','sushiaria','temakeria','churrascaria','rodízio','rodizio','buffet','self service','por kilo','mcdonalds','mcdonald','burguer king','burger king','subway','giraffas','bob','bobs','habib','habibs','kfc','popeyes','outback','frango assado','china in box','spoleto','madero','coco bambu','jeronimo','oakberry','dominos','pizza hut','ifood','rappi','uber eats','ubereats','aiqfome','james','delivery','pedido','entrega','bebida','suco','vitamina','smoothie','milkshake','shake','agua coco','caldo cana','açaí','acai','sorvete','picolé','picole','gelato','frappuccino','cappuccino','espresso','latte','macchiato','chocolate quente','chá','cha','limonada','caipirinha','cerveja','chopp','chope','drinks','coquetel','refrigerante','coca','pepsi','guaraná','guarana','água','agua','agua mineral','soda','isotônico','isotonico','energético','energetico','red bull','monster','vinho','whisky','vodka','gin','rum','tequila','sake','espumante','champagne','cidra','cafeteria','padaria','panificadora','confeitaria','doceria','sorveteria','acaiteria','mercado','supermercado','hipermercado','atacado','atacadão','atacadao','assaí','assai','carrefour','extra','pão de açucar','pao de acucar','walmart','dia','hortifruti','verdureiro','feirinha','feira','quitanda','açougue','acougue','peixaria','mercearia','armazém','armazem','sacolão','sacolao','frango','picanha','costela','alcatra','contrafilé','contrafile','peixe','salmão','salmao','atum','camarão','camarao','lagosta','carne','carne moída','carne moida','hamburguer','hamburger','burguer','burger','linguiça','linguica','salsicha','presunto','mortadela','bacon','pizza','sushi','temaki','yakisoba','lasanha','macarrão','macarrao','massa','risoto','feijoada','angu','polenta','chocolate','doce','sobremesa','bolo','torta','brigadeiro','pudim','gelatina','iogurte','queijo','frios','arroz','feijão','feijao','lentilha','batata','mandioca','cenoura','beterraba','tomate','alface','rúcula','rucula','espinafre','couve','brócolis','brocolis','cebola','alho','maçã','maca','banana','laranja','limão','limao','abacaxi','manga','mamão','mamao','uva','morango','melancia','pera','kiwi','abacate','coco','castanha','amendoim','leite','manteiga','margarina','requeijão','requeijao','ovo','ovos','azeite','óleo','oleo','farinha','açúcar','acucar','cerveja','cerva','chopp','chope','ambev','brahma','skol','antartica','heineken','corona','stella','budweiser','itaipava','crystal','devassa','petra','colorado','eisenbahn','bohemia','original','loja','churrasco','frango','parmegiana','milanesa']},
-  {id:'transporte',label:'Transporte',icon:'🚗',color:'#4a9eff',subs:['Uber/App','Combustível','Transporte Público','Estacionamento','Manutenção'],keys:['uber','99','99pop','cabify','táxi','taxi','taxista','indriver','mototáxi','mototaxi','motoboy','ônibus','onibus','metrô','metro','trem','brt','vlt','van','lotação','lotacao','circular','bilhete','passagem','cartão transporte','cartao transporte','bilhete unico','sptrans','rodoviária','rodoviaria','terminal','condução','conducao','coletivo','eletrico','bonde','gasolina','combustível','combustivel','etanol','álcool','alcool','diesel','gnv','abastecer','abastecimento','posto','ipiranga','shell','petrobras','br','ale','texaco','raizen','pedágio','pedagio','tag','sem parar','veloe','move mais','conectcar','via livre','mecânico','mecanico','oficina','borracheiro','lava rápido','lava rapido','lava jato','autopeça','autopeca','peça carro','peca carro','troca de oleo','filtro','vela','correia','amortecedor','freio','pastilha','disco','radiador','alternador','bateria carro','ipva','dpvat','licenciamento','emplacamento','seguro auto','seguro carro','multa','detran','despachante','estacionamento','manobrista','valet','zona azul','rotativo','park','parking','locadora','localiza','movida','unidas','hertz','avis','avião','aviao','voo','aeroporto','passagem aerea','latam','gol','azul','american','tap','rodoviário','rodoviario','passagem onibus','comfortbus','catarinense','itapemirim','moto','bike','bicicleta','patinete','scooter','frete','mudança','mudanca','guincho','balsa','ferry']},
-  {id:'saude',label:'Saúde',icon:'💊',color:'#ff4f6a',subs:['Farmácia','Consultas','Exames','Academia','Terapia','Plano'],keys:['farmácia','farmacia','drogaria','droga','drogasil','drogaria são paulo','drogaria sao paulo','ultrafarma','panvel','pacheco','nissei','raia','dpsp','onofre','são joão','sao joao','pague menos','extrafarma','remédio','remedio','medicamento','comprimido','cápsula','capsula','xarope','pomada','vitamina','suplemento','proteína','proteina','whey','creatina','ômega','omega','probiótico','probiotico','antibiótico','antibiotico','antiinflamatório','antiinflamatorio','analgésico','analgesico','dipirona','tylenol','paracetamol','ibuprofeno','rivotril','ritalina','seringa','insulina','fralda','absorvente','curativo','band-aid','termômetro','termometro','oxímetro','oximetro','nebulizador','aparelho pressão','aparelho pressao','médico','medico','consulta','clínica','clinica','hospital','upa','pronto socorro','emergência','emergencia','internação','internacao','cirurgia','cardiologista','dermatologista','neurologista','ortopedista','gastroenterologista','pneumologista','endocrinologista','ginecologista','obstetra','pediatra','oftalmologista','oftalmo','dentista','ortodontista','periodontista','implante','canal','aparelho ortodontico','plaquinha','alinhador','faceta','limpeza dental','clareamento','psicólogo','psicologo','psiquiatra','terapeuta','terapia','sessão','sessao','fisioterapeuta','fisioterapia','pilates clinico','rpg','quiropraxia','osteopatia','acupuntura','massagem terapeutica','fonoaudióloga','fonoaudiologa','nutricionista','nutrólogo','nutrologo','exame','laboratório','laboratorio','raio x','raio-x','ultrassom','ressonância','ressonancia','tomografia','ecocardiograma','eletrocardiograma','colonoscopia','endoscopia','mamografia','hemograma','glicemia','colesterol','checkup','check-up','plano de saúde','plano de saude','unimed','amil','sulamerica','bradesco saude','hapvida','notredame','porto seguro saude','odontoprev','dental','academia','gym','smartfit','bluefit','bodytech','competition','crossfit','pilates','yoga','natação','natacao','judô','judo','karatê','karate','muay thai','jiu jitsu','boxe','capoeira','dança','danca','zumba','spinning','musculação','musculacao','funcional','personal trainer','personal','hidroginástica','hidroginastica','padel','corrida','maratona','ciclismo']},
-  {id:'lazer',label:'Lazer',icon:'🎮',color:'#ff6eb4',subs:['Streaming','Cinema/Show','Bar/Balada','Viagem','Hobbies'],keys:['netflix','spotify','amazon prime','prime video','disney','disney plus','disney+','hbo max','hbo','paramount','apple tv','youtube premium','deezer','tidal','crunchyroll','mubi','globoplay','telecine','star plus','star+','discovery plus','funimation','anime','manga','kindle unlimited','cinema','cinemark','cinépolis','cinepolis','uci','cinebox','pipoca','3d','imax','dolby','teatro','musical','show','concerto','festival','evento','ingresso','ingressos','sympla','eventbrite','ticket360','bileto','shotgun','ticketmaster','rock in rio','lollapalooza','carnaval','réveillon','reveillon','bar','botequim','boteco','pub','balada','boate','night','clube noturno','open bar','camarote','vip','cover','consumação','consumacao','drinks','hookah','narguilé','narguile','karaokê','karaoke','parque','hopi hari','beto carrero','thermas','aquatico','zoológico','zoologico','museu','exposição','exposicao','aquário','aquario','planetário','planetario','jardim botanico','trilha','camping','acampamento','hotel','pousada','hostel','airbnb','booking','trivago','resort','flat','motel','spa','day use','jogo','game','steam','playstation','xbox','nintendo','psn','xbox live','game pass','dlc','skin','fifa','free fire','roblox','minecraft','fortnite','lol','cs','valorant','gta','call of duty','zelda','mario','pokemon','fliperama','arcade','boliche','bilhar','sinuca','laser game','paintball','kart','escape room','livro','livraria','saraiva','cultura','kindle','revista','jornal','assinatura','hobby','artesanato','bordado','crochê','croche','tricô','trico','pintura','aquarela','desenho','fotografia','instrumento musical','violão','violao','guitarra','piano','bateria','aula de música','aula de musica','ingresso jogo','futebol','arena','estádio','estadio','flamengo','corinthians','palmeiras','são paulo','grêmio','gremio','internacional','atlético','atletico','cruzeiro','vasco','botafogo','fluminense']},
-  {id:'moradia',label:'Moradia',icon:'🏠',color:'#f5a623',subs:['Aluguel','Contas','Internet/TV','Gás','Reforma','Móveis'],keys:['aluguel','condomínio','condominio','iptu','taxa','administração','administracao','imobiliária','imobiliaria','síndico','sindico','fundo reserva','luz','energia','energia elétrica','energia eletrica','enel','cemig','copel','celpe','coelba','elektro','cpfl','ampla','light','eletropaulo','edp','neoenergia','equatorial','conta de luz','conta energia','água','agua','saneamento','sabesp','cedae','sanepar','copasa','embasa','saneago','conta agua','esgoto','gás','gas','comgas','ceg','gás encanado','botijão','botijao','glp','gás de cozinha','ultragaz','liquigas','supergasbras','copagaz','troca botijão','troca botijao','internet','wi-fi','wifi','net','claro','oi','vivo','tim','nextel','sky','fibra','banda larga','roteador','modem','tv por assinatura','sky tv','claro tv','cabo','antena','parabólica','parabolica','amazon fire','chromecast','apple tv','telefone fixo','seguro residencial','seguro casa','garantia aluguel','fiança','fianca','vistoria','reforma','obra','pedreiro','eletricista','encanador','pintor','carpinteiro','marceneiro','serralheiro','vidraceiro','gesseiro','azulejista','dedetização','dedetizacao','faxina','diarista','empregada','limpeza','consertar','conserto','manutenção','manutencao','reparo','material construção','material construcao','leroy','telhanorte','quero quero','balaroti','sodimac','cimento','areia','tijolo','telha','piso','revestimento','azulejo','porcelanato','tinta','gesso','drywall','madeira','mdf','ferragem','fechadura','vidro','espelho','box banheiro','sofá','sofa','poltrona','cadeira','mesa','rack','estante','armário','armario','guarda roupa','cama','colchão','colchao','berço','berco','cômoda','comoda','geladeira','fogão','fogao','cooktop','forno','microondas','lava louça','lava louca','máquina de lavar','maquina de lavar','secadora','tanquinho','freezer','ar condicionado','ventilador','aquecedor','chuveiro elétrico','chuveiro eletrico','purificador','filtro água','filtro agua','bebedouro','decoração','decoracao','tapete','cortina','persiana','luminária','luminaria','lustre','abajur','tapete','almofada','manta','jogo de cama','toalha','lençol','lencol','travesseiro','edredom','cobertor','piscina','jardinagem']},
-  {id:'compras',label:'Compras',icon:'🛍️',color:'#7c6aff',subs:['Roupas','Eletrônicos','Presentes','Casa','Online','Beleza'],keys:['roupa','roupas','camiseta','camisa','polo','calça','calca','jeans','bermuda','shorts','saia','vestido','blusa','moletom','casaco','jaqueta','blazer','terno','cueca','meia','sutiã','sutia','calcinha','biquíni','biquini','roupa de banho','legging','regata','body','sapato','tênis','tenis','sandália','sandalia','chinelo','chinela','havaianas','ipanema','boot','bota','salto','mocassim','sapatênis','sapatenis','sapatilha','crocs','vans','all star','converse','mizuno','nike','adidas','puma','asics','new balance','reebok','fila','under armour','bolsa','mochila','carteira','cinto','chapéu','chapeu','boné','bone','gorro','cachecol','óculos','oculos','oculos de sol','oculos de grau','lente de contato','zara','renner','riachuelo','c&a','hering','marisa','leader','pernambucanas','dafiti','kanui','passarela','netshoes','centauro','decathlon','track field','farm','animale','arezzo','schutz','melissa','reserva','osklen','ellus','forum','colcci','polo wear','tommy hilfiger','lacoste','calvin klein','armani','hugo boss','celular','smartphone','iphone','samsung','xiaomi','motorola','moto','lg','nokia','huawei','notebook','computador','pc','desktop','tablet','ipad','fone','headphone','airpod','airpods','fone bluetooth','headset','speaker','caixa de som','soundbar','smartwatch','relógio inteligente','relogio inteligente','apple watch','samsung watch','fitbit','garmin','tv','televisão','televisao','smart tv','monitor','projetor','câmera','camera','gopro','drone','impressora','roteador','hd externo','ssd','pendrive','cartão de memória','cartao de memoria','carregador','carregador wireless','adaptador','mouse','teclado','mousepad','kabum','pichau','terabyteshop','fast shop','magazine','magazineluiza','magalu','americanas','casas bahia','pontofrio','extra','shoptime','submarino','amazon','shopee','aliexpress','mercado livre','mercadolivre','shein','enjoei','etsy','shampoo','condicionador','máscara capilar','mascara capilar','leave-in','sabonete','creme','hidratante','protetor solar','filtro solar','perfume','colônia','colonia','desodorante','escova','fio dental','enxaguante','pasta de dente','maquiagem','base','corretivo','batom','gloss','blush','sombra','rímel','rimel','delineador','primer','removedor','depilação','depilacao','manicure','pedicure','esmalte','acetona','alicate','salão','salao','barbearia','corte de cabelo','barba','tintura','escova progressiva','alisamento','botox capilar','keratina','mechas','luzes','coloração','coloracao','higienização capilar','presente','presentes','gift','brinde','souvenirs','detergente','sabão','sabao','amaciante','desinfetante','água sanitária','agua sanitaria','papel higiênico','papel higienico','papel toalha','esponja','vassoura','rodo','balde','pano','mop','aspirador','esfregão','esfregao','organizador','lâmpada','lampada','led','tomada','extensão','extensao','filtro de linha']},
-  {id:'educacao',label:'Educação',icon:'📚',color:'#00d4aa',subs:['Cursos','Faculdade','Livros','Material','Idiomas'],keys:['faculdade','universidade','escola','colégio','colegio','creche','pré escola','pre escola','ensino fundamental','ensino médio','ensino medio','graduação','graduacao','pós graduação','pos graduacao','mestrado','doutorado','MBA','extensão','extensao','especializacao','udemy','alura','coursera','hotmart','eduzz','kiwify','estratégia concursos','estrategia concursos','qconcursos','gran cursos','alfacon','descomplica','prepara','kroton','anhanguera','unip','estácio','estacio','unicsul','uninove','uninter','fgv','insper','ibmec','espm','usp','unicamp','ufrj','ufmg','puc','pucsp','mackenzie','anhembi','livro','apostila','material didático','material didatico','caneta','lápis','lapis','borracha','caderno','agenda','fichário','fichario','mochila escolar','uniforme','kit escolar','impressão','impressao','xerox','encadernação','encadernacao','curso','aula','workshop','mentoria','coaching','treinamento','capacitação','capacitacao','certificação','certificacao','vestibular','enem','concurso público','concurso publico','oab','inglês','ingles','espanhol','francês','frances','alemão','alemao','italiano','japonês','japones','mandarim','libras','ielts','toefl','toeic','cambridge','duolingo','babbel','wizard','cultura inglesa','fisk','yazigi','ccaa','cna','open english','música','musica','violão','violao','guitarra','baixo','teclado','piano','bateria','flauta','conservatório','conservatorio','aula de música','aula de musica','desenho','pintura','aquarela','artes plásticas','artes plasticas','fotografia','design','ux','ui','dança','danca','ballet','balé','bale','jazz','hip hop','forró','forro','tango','salsa']},
-  {id:'carro',label:'Carro',icon:'🚙',color:'#ba7517',subs:['Combustível','Manutenção','Seguro','IPVA/Impostos','Estacionamento'],keys:['gasolina','combustível','combustivel','etanol','álcool','alcool','diesel','gnv','abastecer','abastecimento','posto de gasolina','shell','ipiranga','petrobras','br','ale','texaco','raizen','mecânico','mecanico','oficina mecânica','oficina mecanica','borracheiro','autopeça','autopeca','peça carro','peca carro','troca de óleo','troca de oleo','óleo motor','oleo motor','filtro óleo','filtro oleo','filtro ar','vela ignição','vela ignicao','correia dentada','amortecedor','mola','pastilha freio','disco freio','tambor','freio mão','freio mao','radiador','mangueira','bomba água','bomba agua','bomba combustível','bomba combustivel','injetor','alternador','bateria carro','bobina','sensor','catalisador','escapamento','silencioso','pneu','pneus','trocar pneu','balancear','alinhar','alinhamento','balanceamento','montagem pneu','michelin','bridgestone','pirelli','continental','goodyear','dunlop','firestone','hankook','falken','seguro auto','seguro carro','porto seguro auto','bradesco auto','liberty','allianz','mapfre','tokio marine','hdi seguros','azul seguros auto','ipva','licenciamento','emplacamento','dpvat','multa','multa de trânsito','multa transito','detran','despachante','transferência','transferencia','vistoria veicular','laudo veicular','estacionamento','manobrista','valet','zona azul','rotativo','park','parking','garagem','lavagem carro','lava jato','polimento','cristalização','cristalizacao','higienização','higienizacao','detalhamento','detailing','impermeabilização','impermeabilizacao','plotagem','envelopamento','insulfilm','película','pelicula','som automotivo','central multimídia','central multimidia','câmera ré','camera re','sensor estacionamento','alarme','rastreador','trava elétrica','trava eletrica','acessório carro','acessorio carro','auto shopping','oficina']},
-  {id:'trabalho',label:'Trabalho',icon:'💼',color:'#4a9eff',subs:['Software','Equipamento','Coworking','Transporte Trabalho','Alimentação Trabalho'],keys:['notion','slack','trello','asana','monday','jira','confluence','figma','adobe','photoshop','illustrator','premiere','after effects','lightroom','indesign','autocad','sketchup','blender','davinci resolve','final cut','logic pro','ableton','office','microsoft 365','microsoft office','word','excel','powerpoint','teams','outlook','google workspace','gsuite','dropbox','google drive','one drive','icloud','wetransfer','zoom','meet','webex','whereby','loom','calendly','typeform','mailchimp','hubspot','salesforce','pipedrive','rdstation','active campaign','clickup','basecamp','gitlab','github','bitbucket','vercel','heroku','aws','azure','google cloud','cloudflare','digitalocean','hostgator','locaweb','godaddy','domínio','dominio','hospedagem','certificado ssl','notebook trabalho','computador trabalho','monitor trabalho','webcam','microfone','headset trabalho','impressora','scanner','no-break','estabilizador','mesa escritório','mesa escritorio','cadeira escritório','cadeira escritorio','suporte notebook','hub usb','dock station','coworking','espaço de trabalho','espaco de trabalho','sala reunião','sala reuniao','escritório virtual','escritorio virtual','marketing','publicidade','propaganda','anúncio','anuncio','ads','google ads','facebook ads','instagram ads','tiktok ads','linkedin ads','impulsionar','boost','tráfego','trafego','seo','email marketing','papelaria','material escritório','material escritorio','caneta esferográfica','bloco','post-it','grampeador','grampo','envelope','papel','resma','cartucho','toner','contador','contabilidade','escritório contábil','escritorio contabil','das mei','simples nacional','irpf','irpj','declaração','declaracao','imposto','guia darf','darf','das','GPS','INSS','ISS','ICMS','pro labore','folha pagamento','holerite','rescisão','rescisao','advogado','advocacia','jurídico','juridico','contrato','procuração','procuracao','notário','notario','cartório','cartorio','reconhecimento firma','registro','protocolo','vale transporte','combustível trabalho','almoço trabalho','coffee break','confraternização','confraternizacao','jantar trabalho','happy hour trabalho','vale refeição','vale refeicao','vale alimentação','vale alimentacao','freelancer','freela','prestação de serviços','prestacao de servicos','nota fiscal','nfe','recibo','honorários','honorarios']},
-  {id:'pets',label:'Pets',icon:'🐾',color:'#f5a623',subs:['Ração','Veterinário','Banho/Tosa','Acessórios','Pet Shop'],keys:['ração','racao','ração cachorro','racao cachorro','ração gato','racao gato','snack pet','petisco','osso','bifinho','sachê','sache','lata pet','patê pet','pate pet','royal canin','pedigree','whiskas','purina','premier','golden','vet life','veterinário','veterinario','vet','clínica veterinária','clinica veterinaria','hospital veterinário','hospital veterinario','consulta vet','vacina','vacinação','vacinacao','vermifugo','antiparasitário','antiparasitario','antipulgas','carrapaticida','castração','castracao','cirurgia veterinária','cirurgia veterinaria','internação veterinária','internacao veterinaria','exame veterinário','exame veterinario','radiografia pet','ultrassom pet','banho','tosa','banho e tosa','pet shop','petshop','estética animal','estetica animal','toalete','hidratação pet','hidratacao pet','coleira','guia','focinheira','peitoral','cama pet','cainha','canil','gaiola','aquário pet','aquario pet','terrário','terrario','arranhador','brinquedo pet','bolinha pet','comedouro','bebedouro pet','porta ração','porta racao','caixinha transporte','mochila pet','bolsa pet','adestramento','adestrador','hotel pet','hospedagem pet','creche pet','dog walker','passeador','pet sitter','seguro pet','plano pet','cachorro','gato','pássaro','passaro','peixe','hamster','coelho','tartaruga','calopsita','periquito','papagaio','arara','canário','canario']},
-  {id:'familia',label:'Família',icon:'👨‍👩‍👧',color:'#ff6eb4',subs:['Filhos','Escola','Presentes','Eventos Família'],keys:['fralda','lenço umedecido','lenco umedecido','pomada assaduras','creme bebê','creme bebe','talco','shampoo infantil','sabonete infantil','leite em pó','leite em po','fórmula infantil','formula infantil','mamadeira','chupeta','mordedor','chocalho','cadeirinha','cadeira bebê','cadeira bebe','berço','berco','carrinho bebê','carrinho bebe','banheira bebê','banheira bebe','baby monitor','sling','escola','creche','berçário','bercario','maternal','jardim infância','jardim infancia','mensalidade escola','mensalidade colégio','mensalidade colegio','material escolar','uniforme escolar','mochila escolar','lancheira','kit escolar','livro escolar','caderno escolar','agenda escolar','excursão escolar','excursao escolar','passeio escolar','formatura','baile formatura','natação infantil','natacao infantil','futebol infantil','ballet infantil','judô infantil','judo infantil','dança infantil','danca infantil','brinquedoteca','festa infantil','recreação','recreacao','brinquedo','brinquedos','boneca','carrinho brinquedo','lego','quebra cabeça','quebra cabeca','jogo tabuleiro','jogo educativo','livro infantil','fantasia infantil','aniversário','aniversario','festa','buffet infantil','salão de festas','salao de festas','decoração festa','decoracao festa','bolo aniversário','bolo aniversario','doces festa','salgados festa','lembranças','lembrancas','convite','balão','balao','fotógrafo','fotografo','DJ','animador','casamento','noivado','buffet casamento','vestido noiva','aliança','alianca','anel','cerimonial','lua de mel','presente','presentes','dia das mães','dia das maes','dia dos pais','natal','páscoa','pascoa','dia das crianças','dia das criancas','dia dos namorados','amigo secreto','ceia natal','ceia','churrasco família','churrasco familia','reunião família','reuniao familia']},
-  {id:'investimentos',label:'Investimentos',icon:'📈',color:'#22d07a',subs:['Renda Fixa','Ações','Cripto','Previdência','FII'],keys:['poupança','poupanca','cdb','lci','lca','tesouro direto','tesouro','ntnb','lft','ltn','cri','cra','debenture','debênture','renda fixa','investimento','investir','aporte','ações','acoes','bolsa','bolsa de valores','b3','bovespa','ibovespa','etf','fundo','fundo ações','fundo acoes','fundo renda fixa','fundo multimercado','fundo imobiliário','fundo imobiliario','fii','dividendo','dividendos','proventos','corretora','xp','btg','rico','inter invest','nubank investimentos','clear','modalmais','genial','orama','previdência','previdencia','pgbl','vgbl','previdência privada','previdencia privada','inss','fgts','saque fgts','aposentadoria','pensão','pensao','bitcoin','btc','ethereum','eth','cripto','criptomoeda','crypto','altcoin','binance','mercado bitcoin','coinbase','foxbit','bitso','bybit','kucoin','defi','nft','web3','blockchain','wallet','carteira digital','cold wallet','ledger','trezor','staking','imóvel','imovel','apartamento','casa própria','casa propria','financiamento imóvel','financiamento imovel','minha casa minha vida','fgts imóvel','fgts imovel','entrada imóvel','entrada imovel','escritura','ITBI','corretagem','comissão imobiliária','comissao imobiliaria','reserva emergência','reserva emergencia','carteira','portfólio','portfolio','rentabilidade','rendimento','selic','CDI','IPCA','inflação','inflacao']},
+  {id:'alimentacao',label:'Alimentação',icon:'🍽️',color:'#22d07a',
+    subs:['Lanche/Salgados','Restaurante/Refeição','Delivery','Padaria','Café/Doces','Bebidas','Bar'],
+    keys:['salgado','salgados','coxinha','esfiha','esfirra','esfira','pastel','quibe','kibe','risole','empada','pão de queijo','pao de queijo','bauru','misto quente','cachorro quente','hot dog','hamburguer','hambúrguer','burger','lanche','lanchinho','marmita','marmitex','almoço','almoco','janta','jantar','restaurante','comida','prato feito','pf','self service','churrasco','pizzaria','pizza','sushi','temaki','yakisoba','açaí','acai','sorvete','bolo','doce','chocolate','café','cafeteria','starbucks','mc donalds','mcdonalds','burger king','kfc','subway','habib','habibs','giraffas','bob','madero','outback','coco bambu','china in box','spoleto','jeronimo','ifood','i food','delivery','rappi','uber eats','ubereats','aiqfome','pedido delivery','padaria','panificadora','confeitaria','doceria','sorveteria','acaiteria','pão','pao','baguete','torrada','croissant','tapioca','crepe','waffle','panqueca','cuscuz','quentinha','espetinho','churrasquinho','refrigerante','suco','água','agua','agua mineral','coca','pepsi','guaraná','guarana','bebida','bar','boteco','botequim','pub','chopp','chope','cerveja','cerva','drinks','coquetel','caipirinha','vinho','whisky','vodka','gin','sake','espumante','brahma','skol','heineken','corona','itaipava','original','redBull','monster','açougue']},
+  {id:'mercado',label:'Mercado',icon:'🛒',color:'#00d4aa',
+    subs:['Supermercado','Feira/Hortifruti','Açougue/Peixaria','Produtos de limpeza','Itens de casa'],
+    keys:['mercado','supermercado','mercadinho','compra do mês','compras do mes','atacadão','atacadao','assai','assaí','carrefour','extra','pão de açucar','pao de acucar','dia','feira','hortifruti','sacolão','sacolao','quitanda','acougue','carne','frango','peixe','arroz','feijão','feijao','óleo','oleo','leite','ovos','café em pó','cafe em po','açúcar','acucar','sabão','sabao','detergente','desinfetante','papel higiênico','papel higienico','amaciante','saco de lixo','produto de limpeza','limpeza','compras casa','compras do mes','feira livre','peixaria']},
+  {id:'transporte',label:'Transporte',icon:'🚇',color:'#4a9eff',
+    subs:['Transporte público','Aplicativo','Táxi/Mototáxi','Estacionamento','Pedágio'],
+    keys:['metrô','metro','trem','cptm','ônibus','onibus','busão','busao','condução','conducao','passagem','bilhete único','bilhete unico','top','riocard','uber','ubber','ubar','99','noventa e nove','cabify','indriver','taxi','táxi','mototaxi','mototáxi','estacionamento','zona azul','pedágio','pedagio','sem parar','veloe','conectcar','transporte publico','transporte público','onibus','ônibus inter','brt','vlt','metrô']},
+  {id:'veiculo',label:'Veículo',icon:'🚙',color:'#ba7517',
+    subs:['Combustível','Lavagem','Manutenção/Reparo','Documentação','Seguro','Multas','Acessórios'],
+    keys:['gasolina','alcool','álcool','etanol','diesel','gnv','posto','abasteci','combustível','combustivel','lava rapido','lava rápido','lava jato','lavei o carro','lavagem carro','lavei a moto','mecânico','mecanico','oficina','revisão','revisao','troca de óleo','troca de oleo','pneu','borracharia','bateria carro','freio','alinhamento','balanceamento','ipva','licenciamento','detran','seguro carro','seguro moto','multa carro','multa moto','radar','insulfilm','som automotivo','autopeça','autopeca','filtro oleo','filtro óleo','vela','correia','amortecedor','pastilha','disco freio','radiador','alternador','troca pneu','borracheiro']},
+  {id:'moradia',label:'Moradia',icon:'🏠',color:'#f5a623',
+    subs:['Aluguel/Condomínio','Energia elétrica','Água/Esgoto','Gás','Internet/Telefone/TV','Manutenção da casa','Móveis/Decoração','Eletrodomésticos'],
+    keys:['aluguel','condominio','condomínio','luz','energia','conta de luz','conta de agua','conta de água','gás','gas','botijão','botijao','internet casa','wifi','vivo fibra','claro net','claro residencial','enel','cemig','copel','sabesp','cedae','comgas','ceg','manutenção casa','manutencao casa','pedreiro','pintor','eletricista','encanador','chaveiro','sofá','sofa','cama','colchão','colchao','mesa sala','cadeira','guarda roupa','geladeira','fogão','fogao','microondas','air fryer','máquina de lavar','maquina de lavar','secadora','ventilador','ar condicionado','condominio','agua esgoto','conta agua','conta luz','iptu','internet residencial','vivo','claro','oi residencial','tv assinatura','sky','net tv']},
+  {id:'saude',label:'Saúde',icon:'💊',color:'#ff4f6a',
+    subs:['Farmácia/Remédios','Consulta médica','Exames','Dentista','Terapia/Psicologia','Plano de saúde','Óculos/Lentes'],
+    keys:['farmácia','farmacia','drogaria','drogasil','pacheco','raia','panvel','ultrafarma','pague menos','remédio','remedio','medicamento','dipirona','paracetamol','ibuprofeno','dorflex','neosaldina','xarope','antibiótico','antibiotico','pomada','curativo','band-aid','consulta médica','consulta medica','médico','medico','hospital','pronto socorro','upa','exame médico','exame medico','laboratório','laboratorio','hemograma','ressonância','ressonancia','tomografia','ultrassom','dentista','odonto','aparelho dentário','aparelho dentario','terapia','psicóloga','psicologo','psiquiatra','plano de saúde','plano de saude','convenio','convênio','óculos de grau','oculos de grau','lente de contato','checkup','check-up','vacina','vacinação','vacinacao','plano saude','amil','unimed','sulamerica','hapvida','bradesco saude']},
+  {id:'cuidados',label:'Cuidados Pessoais',icon:'💅',color:'#ff6eb4',
+    subs:['Cabelo/Barba','Unhas','Estética','Cosméticos','Higiene'],
+    keys:['corte cabelo','cabelo','cabeleireiro','cabelereiro','salão','salao','barba','barbeiro','barbearia','manicure','pedicure','unha','esmalte','sobrancelha','depilação','depilacao','limpeza de pele','massagem estética','massagem estetica','botox estético','botox estetico','maquiagem','make','batom','base maquiagem','perfume','colônia','colonia','creme hidratante','hidratante','shampoo','condicionador','sabonete higiene','pasta de dente','desodorante','escova progressiva','alisamento','tintura cabelo','mechas','luzes','coloração cabelo','coloracao cabelo','keratina','botox capilar','coloração','coloracao']},
+  {id:'compras',label:'Compras',icon:'🛍️',color:'#7c6aff',
+    subs:['Roupas','Calçados','Acessórios','Lojas/Shopping'],
+    keys:['roupa','roupas','camiseta','camisa','calça','calca','jeans','bermuda','shorts','blusa','moletom','jaqueta','casaco','vestido','saia','lingerie','cueca','calcinha','meia','pijama','terno','gravata','sapato','sapatos','chinelo','chinela','havaianas','ipanema','sandália','sandalia','bota','sapatilha','bolsa','mochila','carteira','cinto','relógio','relogio','óculos de sol','oculos de sol','brinco','colar','pulseira','boné','bone','shopping','loja','renner','riachuelo','c&a','cea','zara','shein','shopee','mercado livre','mercadolivre','amazon','magalu','americanas','casas bahia','dafiti','netshoes','passarela','kanui','centauro']},
+  {id:'tecnologia',label:'Tecnologia',icon:'📱',color:'#4a9eff',
+    subs:['Celular','Computador','Acessórios','Assistência técnica'],
+    keys:['celular','smartphone','iphone','samsung','xiaomi','motorola','carregador','cabo usb','cabo iphone','capinha','película celular','pelicula celular','fone','airpods','notebook','pc','computador','monitor','teclado','mouse','mousepad','webcam','headset','impressora','cartucho','toner','assistência técnica','assistencia tecnica','conserto celular','troca tela','bateria celular','formatação','formatacao','pendrive','hd externo','ssd']},
+  {id:'assinaturas',label:'Assinaturas',icon:'📺',color:'#d4537e',
+    subs:['Streaming de vídeo','Música/Áudio','Software/Apps','Serviços recorrentes'],
+    keys:['netflix','disney','disney plus','prime video','amazon prime','globoplay','max hbo','hbo','paramount','apple tv','crunchyroll','spotify','deezer','apple music','youtube premium','google one','icloud','dropbox','onedrive','microsoft 365','office 365','adobe','canva','capcut','notion','chatgpt','claude','gemini','midjourney','antivirus','vpn','assinatura','mensalidade app','streaming']},
+  {id:'educacao',label:'Educação',icon:'📚',color:'#00d4aa',
+    subs:['Mensalidade/Curso','Material escolar','Livros','Idiomas'],
+    keys:['escola','faculdade','universidade','mensalidade escola','mensalidade faculdade','curso','aula','professor','reforço','reforcço','cursinho','enem','vestibular','matrícula','matricula','material escolar','caderno','lápis','lapis','mochila escolar','livro','apostila','ebook','inglês','ingles','espanhol','duolingo','cambly','wizard','fisk','yazigi','ccaa','cna','udemy','alura','coursera','hotmart','pós graduação','pos graduacao','mestrado','doutorado','mba']},
+  {id:'lazer',label:'Lazer',icon:'🎮',color:'#7c6aff',
+    subs:['Cinema','Shows/Eventos','Passeios','Jogos/Games','Festa/Balada','Hobbies'],
+    keys:['cinema','ingresso cinema','cinemark','cinepolis','show','evento','ingresso show','sympla','teatro','stand up','museu','parque','zoológico','zoologico','boliche','kart','praia','clube','festa','balada','rolê','role','videogame','jogo','games','playstation','xbox','nintendo','steam','roblox','valorant','lol','free fire','hobby','artesanato','pintura hobby','instrumento musical']},
+  {id:'esporte',label:'Esporte',icon:'🏋️',color:'#639922',
+    subs:['Academia','Equipamentos','Suplementos','Aulas esportivas'],
+    keys:['academia','smart fit','smartfit','bluefit','bodytech','treino','personal','musculação','musculacao','crossfit','pilates','yoga','natação','natacao','luta','boxe','muay thai','jiu jitsu','chuteira','raquete','roupa de treino','legging academia','whey','creatina','pré treino','pre treino','suplemento','proteína','proteina','corrida','maratona','ciclismo','bicicleta','bike','padel','tênis esporte','tenis esporte','squash']},
+  {id:'pets',label:'Pets',icon:'🐾',color:'#f5a623',
+    subs:['Alimentação pet','Veterinário','Banho e tosa','Acessórios pet'],
+    keys:['ração','racao','ração cachorro','racao cachorro','ração gato','racao gato','pet shop','petshop','veterinário','veterinario','vacina cachorro','vacina gato','banho e tosa','tosa','areia gato','sachê pet','sache pet','coleira','guia pet','caminha pet','brinquedo pet','cachorro','gato','pássaro','passaro','hamster','coelho','vet']},
+  {id:'criancas',label:'Crianças',icon:'👶',color:'#ff6eb4',
+    subs:['Bebê','Escola/Creche','Brinquedos'],
+    keys:['bebê','bebe','fralda','lenço umedecido bebê','lenco umedecido bebe','pomada assadura','mamadeira','chupeta','fórmula infantil','formula infantil','aptamil','nan','creche','escolinha','berçário','bercario','brinquedo','boneca','carrinho brinquedo','lego','material infantil','berço','berco','carrinho bebê','carrinho bebe','baby']},
+  {id:'trabalho',label:'Trabalho',icon:'💼',color:'#8888a8',
+    subs:['Material/Serviço profissional','MEI/Empresa','Reembolso'],
+    keys:['coworking','sala reunião','sala reuniao','gráfica trabalho','grafica trabalho','cartão visita','cartao visita','ferramenta trabalho','equipamento trabalho','mei','das mei','contador','contabilidade','nota fiscal','certificado digital','cnpj','domínio','dominio','hospedagem site','anúncio trabalho','anuncio trabalho','trafego pago','reembolso','cliente','freelancer','freela profissional','prestação serviços','prestacao servicos']},
+  {id:'impostos',label:'Impostos/Taxas',icon:'📋',color:'#888',
+    subs:['Documentos','Impostos','Taxas públicas'],
+    keys:['imposto de renda','darf','iptu','taxa prefeitura','receita federal','rg','cpf','cnh','passaporte','segunda via','certidão','certidao','cartório','cartorio','autenticação','autenticacao','reconhecimento firma','registro civil','taxa','imposto']},
+  {id:'financas',label:'Finanças',icon:'💰',color:'#22d07a',
+    subs:['Tarifas bancárias','Cartão de crédito','Empréstimos/Dívidas','Investimentos'],
+    keys:['tarifa banco','taxa banco','anuidade cartão','anuidade cartao','juros','fatura','empréstimo','emprestimo','financiamento','parcela financiamento','dívida','divida','renegociação','renegociacao','investimento','corretora','tesouro direto','cdb','ações','acoes','fundo','cripto','bitcoin','ethereum','poupança','poupanca','nubank investimento','xp','btg','clear','rico']},
+  {id:'presentes',label:'Presentes/Doações',icon:'🎁',color:'#ff6eb4',
+    subs:['Presentes','Doações/Ajuda','Família'],
+    keys:['presente','aniversário','aniversario','lembrancinha','mimo','flor','chocolate presente','doação','doacao','ajuda','ajudei','vaquinha','vakinha','contribuição','contribuicao','dízimo','dizimo','oferta igreja','mandei dinheiro','dinheiro mãe','dinheiro mae','dinheiro pai','mesada']},
+  {id:'viagem',label:'Viagem',icon:'✈️',color:'#4a9eff',
+    subs:['Hospedagem','Passagens','Turismo','Alimentação em viagem'],
+    keys:['hotel','pousada','airbnb','booking','hospedagem','diária','diaria','passagem aérea','passagem aerea','voo','aeroporto','latam','gol','azul','bagagem','passagem ônibus viagem','rodoviária','rodoviaria','buser','clickbus','turismo','passeio viagem','city tour','transfer','seguro viagem']},
+  {id:'servicos',label:'Serviços',icon:'🔧',color:'#8888a8',
+    subs:['Diarista/Limpeza','Chaveiro/Consertos','Correios/Entrega','Impressão/Papelaria'],
+    keys:['diarista','faxina','faxineira','lavanderia','tinturaria','chaveiro','cópia chave','copia chave','conserto','assistência','assistencia','técnico','tecnico','correios','sedex','envio','postagem','frete','motoboy','loggi','lalamove','papelaria','impressão','impressao','xerox','gráfica','grafica']},
   {id:'outros',label:'Outros',icon:'📌',color:'#8888a8',subs:[],keys:[]}
 ];
 
@@ -628,6 +677,14 @@ function filterPer(arr,per){
 function parseDate(txt){
   const t=txt.toLowerCase();
   if(t.includes('hoje')) return today();
+  // dd/mm or dd/mm/yyyy
+  const dmatch=txt.match(/(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?/);
+  if(dmatch){
+    const day=parseInt(dmatch[1]),mon=parseInt(dmatch[2]),yr=dmatch[3]?parseInt(dmatch[3]):new Date().getFullYear();
+    const d=new Date(yr,mon-1,day);
+    if(!isNaN(d.getTime())) return d.toISOString().slice(0,10);
+  }
+  if(t.includes('anteontem')){const d=new Date();d.setDate(d.getDate()-2);return d.toISOString().slice(0,10)}
   if(t.includes('ontem')){const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10)}
   const days={segunda:1,terça:2,terca:2,quarta:3,quinta:4,sexta:5,sábado:6,sabado:6,domingo:0};
   for(const[n,dow] of Object.entries(days)){
@@ -638,11 +695,45 @@ function parseDate(txt){
   return today();
 }
 
+// Priority order for classification (more specific first)
+const CAT_PRIORITY=['assinaturas','veiculo','mercado','alimentacao','transporte','saude','cuidados','esporte','criancas','pets','compras','tecnologia','moradia','educacao','lazer','trabalho','impostos','financas','presentes','viagem','servicos','outros'];
+
 function detectCat(desc){
-  const d=desc.toLowerCase();
-  for(const cat of CATS){
-    if(cat.id==='outros')continue;
-    if((cat.keys||[]).some(k=>d.includes(k)))return cat.id;
+  const d=desc.toLowerCase().trim();
+  
+  // CRITICAL OVERRIDES - words that MUST go to specific categories
+  const overrides=[
+    // Veículo (before transporte)
+    {keys:['gasolina','etanol','alcool','álcool','diesel','gnv','combustivel','combustível','lava rapido','lava rápido','lava jato','lavei o carro','lavagem carro','lavei a moto','ipva','licenciamento','seguro carro','seguro moto','multa carro','oficina','mecânico','mecanico','borracheiro','borracharia','pneu','troca de oleo','troca de óleo','autopeça','autopeca'],cat:'veiculo'},
+    // Mercado (before alimentacao)
+    {keys:['mercado','supermercado','mercadinho','atacadão','atacadao','assai','assaí','carrefour','hortifruti','sacolão','sacolao','quitanda','feira livre','compra do mês','compras do mes','produto de limpeza','detergente','papel higienico','amaciante','sabão em pó','sabao em po'],cat:'mercado'},
+    // Alimentação (salgados etc)
+    {keys:['salgado','coxinha','esfiha','esfirra','esfira','pastel','quibe','kibe','risole','empada','lanche','marmita','marmitex','almoço','almoco','janta','jantar','restaurante','prato feito','churrasco','pizzaria','sushi','temaki','ifood','delivery','rappi','uber eats','padaria','cafeteria','sorvete','açaí','acai','cerveja','chopp','chope','bar','boteco'],cat:'alimentacao'},
+    // Transporte (apps e publico)
+    {keys:['uber','99pop','cabify','indriver','metrô','metro','trem','cptm','ônibus','onibus','busão','bilhete unico','bilhete único','sem parar','veloe','taxi','táxi','mototaxi'],cat:'transporte'},
+    // Saúde (farmácia etc)
+    {keys:['farmácia','farmacia','drogaria','drogasil','remédio','remedio','medicamento','dipirona','paracetamol','ibuprofeno','consulta médica','consulta medica','médico','medico','hospital','pronto socorro','dentista','terapia','psicólogo','psicologo','psiquiatra','plano de saúde','plano de saude','exame médico','exame medico','laboratório','laboratorio','vacina'],cat:'saude'},
+    // Cuidados pessoais
+    {keys:['corte cabelo','cabelo','cabeleireiro','salão','salao','barba','barbeiro','barbearia','manicure','pedicure','unha','esmalte','sobrancelha','depilação','depilacao','maquiagem','make','batom','perfume','shampoo','condicionador'],cat:'cuidados'},
+    // COMPRAS - roupas e calçados (NEVER saude)
+    {keys:['roupa','roupas','camiseta','camisa','calça','calca','jeans','bermuda','shorts','blusa','moletom','jaqueta','casaco','vestido','saia','cueca','calcinha','meia','pijama','terno','sapato','sapatos','chinelo','chinela','havaianas','sandália','sandalia','bota','sapatilha','bolsa','mochila carteira','cinto','brinco','colar','pulseira','boné','bone'],cat:'compras'},
+    // Esporte (academia etc)
+    {keys:['academia','smart fit','smartfit','bluefit','bodytech','treino','personal trainer','musculação','musculacao','crossfit','pilates','yoga','natação','natacao','boxe','muay thai','jiu jitsu','whey','creatina','suplemento','pré treino','pre treino'],cat:'esporte'},
+    // Assinaturas
+    {keys:['netflix','disney plus','prime video','amazon prime','globoplay','hbo','paramount','apple tv','crunchyroll','spotify','deezer','apple music','youtube premium','google one','icloud','dropbox','microsoft 365','adobe','canva','chatgpt','claude','notion'],cat:'assinaturas'},
+    // Moradia
+    {keys:['aluguel','condominio','condomínio','conta de luz','conta de agua','conta de água','energia elétrica','energia eletrica','botijão','botijao','internet casa','vivo fibra','claro net','enel','cemig','sabesp','comgas','iptu'],cat:'moradia'},
+  ];
+  
+  for(const ov of overrides){
+    if(ov.keys.some(k=>d.includes(k))) return ov.cat;
+  }
+  
+  // Fallback: search by priority order
+  for(const catId of CAT_PRIORITY){
+    const cat=CATS.find(c=>c.id===catId);
+    if(!cat||catId==='outros') continue;
+    if((cat.keys||[]).some(k=>d.includes(k))) return catId;
   }
   return 'outros';
 }
@@ -650,7 +741,29 @@ function detectCat(desc){
 function detectSub(desc,catId){
   const d=desc.toLowerCase();
   const cat=getCat(catId);
-  return (cat.subs||[]).find(s=>d.includes(s.toLowerCase()))||'';
+  if(!cat||!cat.subs) return '';
+  // Map sub keywords
+  const subMap={
+    'alimentacao':{lanche:['salgado','coxinha','esfiha','esfirra','kibe','quibe','pastel','empada','risole','lanchinho','pão de queijo','pao de queijo','bauru','hot dog','cachorro quente'],delivery:['ifood','rappi','uber eats','ubereats','delivery','pedido'],padaria:['padaria','panificadora'],restaurante:['restaurante','almoço','almoco','jantar','janta','prato feito','pf','self service'],cafe:['café','cafe','cafeteria','starbucks'],bebidas:['cerveja','chopp','chope','suco','água','agua','refrigerante','drinks'],bar:['bar','boteco','botequim','pub']},
+    'mercado':{supermercado:['mercado','supermercado','atacadão','atacadao','assai','carrefour','extra'],feira:['feira','hortifruti','sacolão','sacolao','quitanda'],acougue:['açougue','acougue','peixaria','carne'],limpeza:['detergente','sabão','sabao','desinfetante','papel higienico','amaciante','produto de limpeza']},
+    'transporte':{publico:['metrô','metro','trem','ônibus','onibus','bilhete','cptm','brt'],app:['uber','99','cabify','indriver'],taxi:['taxi','táxi','mototaxi'],estacionamento:['estacionamento','zona azul'],pedagio:['pedágio','pedagio','sem parar','veloe']},
+    'veiculo':{combustivel:['gasolina','etanol','alcool','diesel','gnv','posto','combustivel','combustível'],lavagem:['lava rapido','lava rápido','lava jato','lavei o carro','lavagem','lavei a moto'],manutencao:['mecânico','mecanico','oficina','revisão','revisao','troca de oleo','pneu','borracharia','freio','alinhamento','bateria'],documentacao:['ipva','licenciamento','detran','despachante'],seguro:['seguro carro','seguro moto'],multas:['multa','radar']},
+    'saude':{farmacia:['farmácia','farmacia','drogaria','remédio','remedio','medicamento','dipirona','paracetamol','ibuprofeno'],consulta:['consulta','médico','medico','hospital','pronto socorro','upa'],exames:['exame','laboratório','laboratorio','hemograma','ultrassom','ressonância'],dentista:['dentista','odonto','aparelho dentário'],terapia:['terapia','psicólogo','psicologo','psiquiatra'],plano:['plano de saúde','plano de saude','convenio','convênio']},
+    'cuidados':{cabelo:['cabelo','cabeleireiro','salão','salao','barba','barbeiro','barbearia','corte'],unhas:['manicure','pedicure','unha','esmalte'],estetica:['sobrancelha','depilação','depilacao','limpeza de pele','massagem'],cosmeticos:['maquiagem','make','batom','perfume','shampoo','condicionador']},
+    'compras':{roupas:['roupa','roupas','camiseta','camisa','calça','calca','jeans','bermuda','shorts','blusa','moletom','jaqueta','casaco','vestido','saia','cueca','calcinha','meia','pijama','terno'],calcados:['sapato','sapatos','chinelo','chinela','havaianas','sandália','sandalia','bota','sapatilha','tênis','tenis'],acessorios:['bolsa','carteira','cinto','brinco','colar','pulseira','boné','bone','óculos de sol'],lojas:['shopping','loja','renner','riachuelo','zara','shein','shopee','mercado livre','amazon','magalu','americanas']},
+    'esporte':{academia:['academia','smart fit','smartfit','bluefit','bodytech','treino','musculação','musculacao','crossfit'],suplementos:['whey','creatina','suplemento','pré treino','pre treino','proteína','proteina'],equipamentos:['chuteira','raquete','bola','equipamento'],aulas:['pilates','yoga','natação','natacao','boxe','muay thai','jiu jitsu']},
+  };
+  const catSubs=subMap[catId];
+  if(catSubs){
+    for(const[sub,words]of Object.entries(catSubs)){
+      if(words.some(w=>d.includes(w))){
+        const cat=getCat(catId);
+        const match=cat.subs.find(s=>s.toLowerCase().includes(sub)||sub.includes(s.toLowerCase().split('/')[0].toLowerCase()));
+        return match||cat.subs[0]||'';
+      }
+    }
+  }
+  return (cat.subs||[])[0]||'';
 }
 
 function parseMsg(txt){
@@ -708,17 +821,48 @@ function showPreview(txt){
 
 function regKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doReg()}}
 
+function openDatePicker(){
+  const inp=document.getElementById('reg-date-inp');
+  inp.value=selDate||today();
+  inp.style.cssText='position:fixed;opacity:0;top:50%;left:50%;width:1px;height:1px';
+  try{inp.showPicker();}catch(e){inp.click();}
+}
+
+function onDateChange(val){
+  selDate=val||null;
+  document.getElementById('reg-date-inp').style.cssText='position:fixed;opacity:0;pointer-events:none;width:1px;height:1px;top:0;left:0';
+  updateDateChip();
+}
+
+function updateDateChip(){
+  const lbl=document.getElementById('date-chip-lbl');
+  const chip=document.getElementById('date-chip');
+  if(!lbl||!chip)return;
+  if(!selDate||selDate===today()){
+    lbl.textContent='Hoje';
+    chip.style.borderColor='';chip.style.color='';
+  } else {
+    const yest=new Date();yest.setDate(yest.getDate()-1);
+    const isYest=selDate===yest.toISOString().slice(0,10);
+    if(isYest){lbl.textContent='Ontem';}
+    else{const d=new Date(selDate+'T12:00:00');lbl.textContent=d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});}
+    chip.style.borderColor='var(--acc)';chip.style.color='var(--acc2)';
+  }
+}
+
 function doReg(){
   const inp=document.getElementById('reg-inp');
   const txt=inp.value.trim();if(!txt)return;
   const p=parseMsg(txt);
   if(!p){showFeedback('❌ Não entendi. Ex: 45 almoço ou uber 32 pix');return}
   p.payment=selPayment;
+  if(selDate)p.date=selDate;
   addTx(p);
   inp.value='';inp.style.height='';
   document.getElementById('reg-preview').classList.remove('show');
   document.getElementById('reg-send').disabled=true;
   document.getElementById('reg-box').classList.remove('focus');
+  selDate=null;updateDateChip();
   const c=getCat(p.catId);
   showFeedback(`✅ ${fmt(p.val)} em ${p.desc} → ${c.icon} ${c.label}`);
   renderAll();
@@ -888,10 +1032,7 @@ function renderQuickBtns(){
 function renderDash(){
   const trip=getTrip();const txs=ctxTXS();const m=startMonth();const now=new Date();
   const h=now.getHours();const g=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
-  const uname=localStorage.getItem('fin_username')||'';
-  const firstName=uname?uname.split(' ')[0]:'';
-  const greet=firstName?`${g}, ${firstName} 👋`:`${g} 👋`;
-  const dt=document.getElementById('dash-title');if(dt)dt.textContent=trip?`${trip.emoji} ${trip.name}`:greet;
+  const dt=document.getElementById('dash-title');if(dt)dt.textContent=trip?`${trip.emoji} ${trip.name}`:`${g}, Daniel 👋`;
   const ds=document.getElementById('dash-sub');if(ds)ds.textContent=trip?`${fmtD(trip.start)} → ${fmtD(trip.end)}`:now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
 
   // Score
@@ -1006,13 +1147,13 @@ function renderHist(){
   const az=document.getElementById('anomaly-zone');
   if(az){const anoms=detectAnomalies().filter(a=>a.type==='dup');az.innerHTML=anoms.length?`<div class="ibox ibox-danger" style="margin-bottom:10px">⚠️ ${anoms.length} gasto${anoms.length>1?'s':''} possivelmente duplicado${anoms.length>1?'s':''}. Verifique em Análise.</div>`:''}
   const el=document.getElementById('hist-list');if(!el)return;
-  if(!visible.length){el.innerHTML='<div class="empty">Nenhum gasto neste período<br><span style="font-size:12px">Registre seu primeiro gasto acima ↑</span></div>';return}
+  if(!visible.length){el.innerHTML='<div class="empty">Nenhum gasto encontrado</div>';return}
   const byDate={};visible.forEach(x=>{(byDate[x.date]=byDate[x.date]||[]).push(x)});
   let html='';
   Object.entries(byDate).forEach(([date,txs])=>{
     const daySum=sum(txs);
     html+=`<div style="padding:10px 0 4px;font-size:11px;color:var(--text3);display:flex;justify-content:space-between"><span>${fmtD(date)}</span><span class="mono">${fmt(daySum)}</span></div>`;
-    html+=txs.map(x=>{const c=getCat(x.catId);return`<div class="tx-item"><div class="tx-icon" style="background:${c.color}22">${c.icon}</div><div class="tx-info"><div class="tx-desc">${x.desc}</div><div class="tx-meta">${c.label}${x.subgroup?' · '+x.subgroup:''} ${PAYICONS[x.payment||'outros']||''}${x.banco?' · '+x.banco:''}</div></div><div class="tx-amt">${fmt(x.val)}</div><div class="tx-del" onclick="delTx('${x.id}')">✕</div></div>`}).join('');
+    html+=txs.map(x=>{const c=getCat(x.catId);return`<div class="tx-item"><div class="tx-icon" style="background:${c.color}22">${c.icon}</div><div class="tx-info"><div class="tx-desc">${x.desc}</div><div class="tx-meta">${c.label}${x.subgroup?' · '+x.subgroup:''} ${PAYICONS[x.payment||'outros']||''}${x.banco?' · '+x.banco:''}${x.obs?' · '+x.obs:''}</div></div><div class="tx-amt">${fmt(x.val)}</div><button class="tx-edit-btn" onclick="openEditTx('${x.id}')">✏️</button><div class="tx-del" onclick="delTx('${x.id}')">✕</div></div>`}).join('');
   });
   el.innerHTML=html;
 }
@@ -1137,10 +1278,6 @@ function renderCoach(){
 // CONFIG
 // ══════════════════════════════════════════════
 function renderCfg(){
-  const n=localStorage.getItem('fin_username')||'–';
-  const ul=document.getElementById('cfg-username-lbl');
-  if(ul) ul.textContent='Olá, '+n;
-
   // Receitas
   const rel=document.getElementById('receitas-list');
   if(rel){const m=startMonth();const mes=RECS.filter(r=>r.date>=m);rel.innerHTML=mes.length?mes.slice().reverse().map(r=>`<div class="tx-item"><div class="tx-icon" style="background:rgba(34,208,122,.15)">${RECICONS[r.tipo]||'💰'}</div><div class="tx-info"><div class="tx-desc">${r.desc}</div><div class="tx-meta">${r.tipo} · ${fmtD(r.date)}</div></div><div class="tx-amt green">${fmt(r.val)}</div><div class="tx-del" onclick="delRec('${r.id}')">✕</div></div>`).join(''):'<div class="empty">Nenhuma receita este mês</div>'}
@@ -1183,7 +1320,7 @@ function exportXLSX(){
     XLSX.writeFile(wb,`fin_DA_${today()}.xlsx`);
   };document.head.appendChild(s);
 }
-function clearAll(){if(!confirm('⚠️ Apagar TODOS os dados?'))return;TXS=[];TRIPS=[];RECS=[];FIXAS=[];GOALS=[];CATS=JSON.parse(JSON.stringify(DEFAULT_CATS));CHIPS=['☕ café 8','🍽️ almoço 45','🚗 uber 32 pix','🛒 mercado 120','💊 farmácia 35'];['fin_txs','fin_trips','fin_recs','fin_fixas','fin_goals','fin_cats','fin_chips','fin_username'].forEach(k=>localStorage.removeItem(k));CTX='normal';location.reload();}
+function clearAll(){if(!confirm('⚠️ Apagar TODOS os dados?'))return;TXS=[];TRIPS=[];RECS=[];FIXAS=[];GOALS=[];CATS=JSON.parse(JSON.stringify(DEFAULT_CATS));CHIPS=['☕ café 8','🍽️ almoço 45','🚗 uber 32 pix','🛒 mercado 120','💊 farmácia 35'];['fin_txs','fin_trips','fin_recs','fin_fixas','fin_goals','fin_cats','fin_chips'].forEach(k=>localStorage.removeItem(k));CTX='normal';location.reload()}
 
 // ══════════════════════════════════════════════
 // NAVIGATION / MODAL
@@ -1194,69 +1331,107 @@ function closeMov(id){document.getElementById(id).classList.remove('open')}
 document.querySelectorAll('.mov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.mov.open').forEach(m=>m.classList.remove('open'))});
 
-
-// ══════════════════════════════════════════════
-// ONBOARDING
-// ══════════════════════════════════════════════
-function obCheck(){
-  const v = document.getElementById('ob-name').value.trim();
-  const btn = document.getElementById('ob-btn');
-  btn.disabled = !v;
-  btn.style.opacity = v ? '1' : '.35';
-}
-
-function obStart(){
-  const name = document.getElementById('ob-name').value.trim();
-  if(!name) return;
-  localStorage.setItem('fin_username', name);
-  const ob = document.getElementById('onboarding');
-  ob.style.opacity='0';
-  setTimeout(()=>{ob.style.display='none';},300);
-  applyUsername(name);
-  buildEmojiGrid();
-  renderCtxBar();
-  renderAll();
-}
-
-function applyUsername(name){
-  // Update eyebrow
-  const ey = document.getElementById('app-eyebrow');
-  if(ey) ey.textContent = 'Fluxo D.A.S · ' + name;
-  // Update page title
-  document.title = 'Fluxo D.A.S · ' + name;
-  // Update dash greeting area subtitle branding
-  window._username = name;
-}
-
-function resetName(){
-  if(!confirm('Trocar o nome vai reiniciar o app. Seus dados serão apagados. Continuar?')) return;
-  ['fin_txs','fin_trips','fin_recs','fin_fixas','fin_goals','fin_cats','fin_chips','fin_username'].forEach(k=>localStorage.removeItem(k));
-  location.reload();
-}
-
-function checkOnboarding(){
-  const name = localStorage.getItem('fin_username');
-  if(name){
-    const ob=document.getElementById('onboarding');
-    if(ob) ob.style.display = 'none';
-    applyUsername(name);
-    return true;
-  }
-  return false;
-  return false;
-}
-
 // ══════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════
-function init(){buildEmojiGrid();renderCtxBar();renderAll();
-  // Update name in UI if already set
-  const n=localStorage.getItem('fin_username');if(n)applyUsername(n);
+function init(){
+  // Migrate old cats if missing new categories
+  const hasNewCats = CATS.some(c=>c.id==='veiculo'||c.id==='cuidados'||c.id==='mercado');
+  if(!hasNewCats){
+    CATS = JSON.parse(JSON.stringify(DEFAULT_CATS));
+    saveCATS();
+    console.log('Categories migrated to new version');
+  }
+  buildEmojiGrid();renderCtxBar();renderAll();
   // Alerta fixas
   const venc=FIXAS.filter(f=>f.dia===new Date().getDate()||f.dia===new Date().getDate()+1);
   if(venc.length)setTimeout(()=>showFeedback(`⏰ ${venc.map(f=>f.nome).join(', ')} vence${venc.length>1?'m':''} em breve`),1000);
 }
-document.addEventListener('DOMContentLoaded',()=>{ if(checkOnboarding()){ init(); } /* else: onboarding shown, obStart calls init */ });
+document.addEventListener('DOMContentLoaded',init);
+
+// ══════════════════════════════════════════════
+// EDIT TX
+// ══════════════════════════════════════════════
+function openEditTx(id){
+  const tx=TXS.find(x=>x.id===id);if(!tx)return;
+  document.getElementById('edit-tx-id').value=id;
+  document.getElementById('edit-desc').value=tx.desc||'';
+  document.getElementById('edit-val').value=tx.val||0;
+  document.getElementById('edit-date').value=tx.date||today();
+  document.getElementById('edit-pay').value=tx.payment||'outros';
+  document.getElementById('edit-banco').value=tx.banco||'';
+  document.getElementById('edit-obs').value=tx.obs||'';
+  // Populate cat select
+  const catSel=document.getElementById('edit-cat');
+  catSel.innerHTML=CATS.map(c=>`<option value="${c.id}">${c.icon} ${c.label}</option>`).join('');
+  catSel.value=tx.catId||'outros';
+  updateEditSubs(tx.subgroup||'');
+  openMov('mov-edit-tx');
+}
+
+function updateEditSubs(selSub){
+  const catId=document.getElementById('edit-cat').value;
+  const cat=getCat(catId);
+  const subSel=document.getElementById('edit-sub');
+  subSel.innerHTML='<option value="">Sem subcategoria</option>'+(cat.subs||[]).map(s=>`<option value="${s}">${s}</option>`).join('');
+  if(selSub!==undefined) subSel.value=selSub||'';
+}
+
+function saveEditTx(){
+  const id=document.getElementById('edit-tx-id').value;
+  const idx=TXS.findIndex(x=>x.id===id);if(idx<0)return;
+  const val=parseFloat(document.getElementById('edit-val').value)||0;
+  if(!val){alert('Informe o valor');return}
+  TXS[idx]={
+    ...TXS[idx],
+    desc:document.getElementById('edit-desc').value.trim()||TXS[idx].desc,
+    val:val,
+    date:document.getElementById('edit-date').value||today(),
+    catId:document.getElementById('edit-cat').value,
+    subgroup:document.getElementById('edit-sub').value,
+    payment:document.getElementById('edit-pay').value,
+    banco:document.getElementById('edit-banco').value.trim(),
+    obs:document.getElementById('edit-obs').value.trim(),
+  };
+  saveTXS();closeMov('mov-edit-tx');renderAll();
+  showFeedback('✅ Lançamento atualizado!');
+}
+
+function deleteEditTx(){
+  const id=document.getElementById('edit-tx-id').value;
+  if(!confirm('Excluir este lançamento?'))return;
+  TXS=TXS.filter(x=>x.id!==id);
+  saveTXS();closeMov('mov-edit-tx');renderAll();
+  showFeedback('🗑️ Lançamento excluído');
+}
 </script>
+
+<!-- MODAL: EDIT TX -->
+<div class="mov" id="mov-edit-tx"><div class="modal">
+  <div class="mhandle"></div>
+  <div class="mtitle">✏️ Editar lançamento</div>
+  <div class="edit-field"><label>Descrição</label><input type="text" id="edit-desc" placeholder="Descrição do gasto"></div>
+  <div class="edit-field"><label>Valor (R$)</label><input type="number" id="edit-val" inputmode="decimal" step="0.01" placeholder="0,00"></div>
+  <div class="edit-field"><label>Data</label><input type="date" id="edit-date"></div>
+  <div class="edit-field"><label>Categoria</label><select id="edit-cat" onchange="updateEditSubs()"></select></div>
+  <div class="edit-field"><label>Subcategoria</label><select id="edit-sub"></select></div>
+  <div class="edit-field"><label>Forma de pagamento</label>
+    <select id="edit-pay">
+      <option value="credito">💳 Crédito</option>
+      <option value="debito">🏧 Débito</option>
+      <option value="pix">⚡ Pix</option>
+      <option value="dinheiro">💵 Dinheiro</option>
+      <option value="outros">📌 Outros</option>
+    </select>
+  </div>
+  <div class="edit-field"><label>Banco</label><input type="text" id="edit-banco" placeholder="Nubank, Itaú..."></div>
+  <div class="edit-field"><label>Observação</label><input type="text" id="edit-obs" placeholder="Opcional..."></div>
+  <div class="edit-actions">
+    <button class="btn btn-primary" onclick="saveEditTx()">💾 Salvar</button>
+    <button class="btn btn-ghost" onclick="closeMov('mov-edit-tx')">Cancelar</button>
+  </div>
+  <button class="btn btn-danger" style="margin-top:8px" onclick="deleteEditTx()">🗑️ Excluir lançamento</button>
+  <input type="hidden" id="edit-tx-id">
+</div></div>
 </body>
 </html>
