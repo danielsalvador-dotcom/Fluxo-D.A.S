@@ -11,7 +11,7 @@
 :root{--bg:#0a0a0f;--bg1:#13131f;--bg2:#1c1c2e;--bg3:#25253a;--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.14);--text:#eeeef5;--text2:#8888aa;--text3:#44445a;--acc:#7c6aff;--acc2:#a594ff;--green:#22d07a;--red:#ff4f6a;--amber:#f5a623;--blue:#4a9eff;--pink:#ff6eb4;--teal:#00d4aa;--sans:system-ui,-apple-system,sans-serif;--mono:ui-monospace,monospace;--tb:64px;--sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.5;overscroll-behavior:none}
-.page{display:none;position:fixed;inset:0;bottom:calc(var(--tb)+var(--sb));overflow-y:auto;-webkit-overflow-scrolling:touch}
+.page{display:none;position:fixed;top:0;left:0;right:0;bottom:calc(var(--tb)+var(--sb));overflow-y:scroll;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .page.on{display:block}
 .pi{padding:0 16px 40px}
 /* HEADER */
@@ -139,6 +139,17 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .ob-hint{font-size:12px;color:var(--text3);margin-top:14px;line-height:1.6}
 /* COACH */
 .goal-card{background:linear-gradient(135deg,rgba(124,106,255,.12),rgba(34,208,122,.06));border:1px solid rgba(124,106,255,.2);border-radius:18px;padding:18px;margin-bottom:12px}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+  html { overflow: auto; }
+  body { overflow: auto; height: auto; max-width: 480px; margin: 0 auto; padding-bottom: calc(var(--tb) + 40px); }
+  .page { position: static; display: none; height: auto; overflow: visible; bottom: auto; }
+  .page.on { display: block; }
+  .tbar { position: fixed; max-width: 480px; left: 50%; transform: translateX(-50%); }
+  #ob { position: fixed; max-width: 480px; left: 50%; transform: translateX(-50%); }
+  .hdr { position: relative; background: var(--bg); }
+}
 </style>
 </head>
 <body>
