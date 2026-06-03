@@ -706,40 +706,41 @@ function parseDate(txt){
 // Priority order for classification (more specific first)
 const CAT_PRIORITY=['assinaturas','veiculo','mercado','alimentacao','transporte','saude','cuidados','esporte','criancas','pets','compras','tecnologia','moradia','educacao','lazer','trabalho','impostos','financas','presentes','viagem','servicos','outros'];
 
+// ALWAYS use DEFAULT_CATS for detection (not localStorage version which may be outdated)
 function detectCat(desc){
   const d=desc.toLowerCase().trim();
   
-  // CRITICAL OVERRIDES - words that MUST go to specific categories
-  const overrides=[
-    // Veículo (before transporte)
-    {keys:['gasolina','etanol','alcool','álcool','diesel','gnv','combustivel','combustível','lava rapido','lava rápido','lava jato','lavei o carro','lavagem carro','lavei a moto','ipva','licenciamento','seguro carro','seguro moto','multa carro','oficina','mecânico','mecanico','borracheiro','borracharia','pneu','troca de oleo','troca de óleo','autopeça','autopeca'],cat:'veiculo'},
-    // Mercado (before alimentacao)
-    {keys:['mercado','supermercado','mercadinho','atacadão','atacadao','assai','assaí','carrefour','hortifruti','sacolão','sacolao','quitanda','feira livre','compra do mês','compras do mes','produto de limpeza','detergente','papel higienico','amaciante','sabão em pó','sabao em po'],cat:'mercado'},
-    // Alimentação (salgados etc)
-    {keys:['salgado','coxinha','esfiha','esfirra','esfira','pastel','quibe','kibe','risole','empada','lanche','marmita','marmitex','almoço','almoco','janta','jantar','restaurante','prato feito','churrasco','pizzaria','sushi','temaki','ifood','delivery','rappi','uber eats','padaria','cafeteria','sorvete','açaí','acai','cerveja','chopp','chope','bar','boteco'],cat:'alimentacao'},
-    // Transporte (apps e publico)
-    {keys:['uber','99pop','cabify','indriver','metrô','metro','trem','cptm','ônibus','onibus','busão','bilhete unico','bilhete único','sem parar','veloe','taxi','táxi','mototaxi'],cat:'transporte'},
-    // Saúde (farmácia etc)
-    {keys:['farmácia','farmacia','drogaria','drogasil','remédio','remedio','medicamento','dipirona','paracetamol','ibuprofeno','consulta médica','consulta medica','médico','medico','hospital','pronto socorro','dentista','terapia','psicólogo','psicologo','psiquiatra','plano de saúde','plano de saude','exame médico','exame medico','laboratório','laboratorio','vacina'],cat:'saude'},
+  // CRITICAL OVERRIDES — hard-coded, never wrong
+  const OVERRIDES=[
+    // Compras (MUST come before saude — roupa/camiseta/tenis NEVER go to saude)
+    {cat:'compras',words:['roupa','roupas','camiseta','camisa social','camisa polo','calça','calca','jeans','bermuda','shorts','blusa','moletom','jaqueta','casaco','vestido','saia','lingerie','cueca','calcinha','meia calça','meia calca','pijama','terno','gravata','sapato','sapatos','chinelo','chinela','havaianas','sandália','sandalia','bota','sapatilha','bolsa','mochila','carteira couro','cinto','brinco','colar','pulseira','boné','bone','shopping','renner','riachuelo','c&a','zara','shein','shopee','dafiti','netshoes','passarela','kanui']},
+    // Veículo
+    {cat:'veiculo',words:['gasolina','etanol','alcool combustivel','álcool combustivel','diesel','gnv','posto gasolina','posto combustivel','abasteci','lava rapido','lava rápido','lava jato','lavei o carro','lavagem carro','lavei a moto','mecânico','mecanico','oficina mecânica','oficina mecanica','revisão carro','revisao carro','troca de óleo','troca de oleo','pneu','borracharia','borracheiro','bateria carro','freio carro','alinhamento carro','balanceamento','ipva','licenciamento','detran','seguro carro','seguro moto','multa carro','multa moto','insulfilm','autopeça','autopeca']},
+    // Mercado
+    {cat:'mercado',words:['mercado','supermercado','mercadinho','atacadão','atacadao','assai','assaí','carrefour','extra','hortifruti','sacolão','sacolao','quitanda','feira livre','compra do mês','compras do mes','produto de limpeza','detergente','papel higienico','papel higiênico','amaciante','sabão em pó','sabao em po']},
+    // Alimentação
+    {cat:'alimentacao',words:['salgado','coxinha','esfiha','esfirra','esfira','pastel','quibe','kibe','risole','empada','pão de queijo','pao de queijo','bauru','misto quente','cachorro quente','hot dog','hamburguer','hambúrguer','burger','lanche','lanchinho','marmita','marmitex','almoço','almoco','jantar','janta','restaurante','prato feito','self service','churrascaria','churrasco','pizzaria','sushi','temaki','açaí','acai','sorvete','bolo','doce','chocolate','cafeteria','starbucks','ifood','delivery','rappi','uber eats','ubereats','padaria','panificadora']},
+    // Transporte
+    {cat:'transporte',words:['uber','99pop','cabify','indriver','metrô','metro','trem','cptm','ônibus','onibus','busão','bilhete unico','bilhete único','sem parar','veloe','taxi','táxi','mototaxi','transporte publico','transporte público']},
+    // Saúde (after compras — roupa NEVER reaches here)
+    {cat:'saude',words:['farmácia','farmacia','drogaria','drogasil','pacheco','raia','panvel','ultrafarma','pague menos','remédio','remedio','medicamento','dipirona','paracetamol','ibuprofeno','dorflex','xarope','antibiótico','antibiotico','pomada','curativo','consulta médica','consulta medica','médico','medico','hospital','pronto socorro','upa','exame médico','exame medico','laboratório','laboratorio','dentista','terapia','psicólogo','psicologo','psiquiatra','plano de saúde','plano de saude','convenio','convênio','óculos de grau','oculos de grau','lente de contato','vacina']},
     // Cuidados pessoais
-    {keys:['corte cabelo','cabelo','cabeleireiro','salão','salao','barba','barbeiro','barbearia','manicure','pedicure','unha','esmalte','sobrancelha','depilação','depilacao','maquiagem','make','batom','perfume','shampoo','condicionador'],cat:'cuidados'},
-    // COMPRAS - roupas e calçados (NEVER saude)
-    {keys:['roupa','roupas','camiseta','camisa','calça','calca','jeans','bermuda','shorts','blusa','moletom','jaqueta','casaco','vestido','saia','cueca','calcinha','meia','pijama','terno','sapato','sapatos','chinelo','chinela','havaianas','sandália','sandalia','bota','sapatilha','bolsa','mochila carteira','cinto','brinco','colar','pulseira','boné','bone'],cat:'compras'},
-    // Esporte (academia etc)
-    {keys:['academia','smart fit','smartfit','bluefit','bodytech','treino','personal trainer','musculação','musculacao','crossfit','pilates','yoga','natação','natacao','boxe','muay thai','jiu jitsu','whey','creatina','suplemento','pré treino','pre treino'],cat:'esporte'},
+    {cat:'cuidados',words:['corte de cabelo','corte cabelo','cabeleireiro','salão','salao','barbearia','barbeiro','barba','manicure','pedicure','sobrancelha','depilação','depilacao','maquiagem','make','batom','perfume','shampoo','condicionador','escova progressiva','tintura cabelo','coloração','coloracao']},
+    // Esporte (academia vem antes de compras para evitar confusão)
+    {cat:'esporte',words:['academia','smart fit','smartfit','bluefit','bodytech','musculação','musculacao','crossfit','pilates','yoga','natação','natacao','boxe','muay thai','jiu jitsu','whey','creatina','suplemento','pré treino','pre treino','proteína']},
     // Assinaturas
-    {keys:['netflix','disney plus','prime video','amazon prime','globoplay','hbo','paramount','apple tv','crunchyroll','spotify','deezer','apple music','youtube premium','google one','icloud','dropbox','microsoft 365','adobe','canva','chatgpt','claude','notion'],cat:'assinaturas'},
+    {cat:'assinaturas',words:['netflix','disney plus','prime video','amazon prime','globoplay','hbo','paramount','apple tv','crunchyroll','spotify','deezer','apple music','youtube premium','google one','icloud','dropbox','microsoft 365','adobe','canva','chatgpt','notion']},
     // Moradia
-    {keys:['aluguel','condominio','condomínio','conta de luz','conta de agua','conta de água','energia elétrica','energia eletrica','botijão','botijao','internet casa','vivo fibra','claro net','enel','cemig','sabesp','comgas','iptu'],cat:'moradia'},
+    {cat:'moradia',words:['aluguel','condominio','condomínio','conta de luz','conta de agua','conta de água','energia elétrica','energia eletrica','botijão','botijao','internet casa','vivo fibra','claro net','enel','cemig','sabesp','comgas','iptu']},
   ];
   
-  for(const ov of overrides){
-    if(ov.keys.some(k=>d.includes(k))) return ov.cat;
+  for(const ov of OVERRIDES){
+    if(ov.words.some(w=>d===w||d.startsWith(w+' ')||d.endsWith(' '+w)||d.includes(' '+w+' ')||d.includes(w))) return ov.cat;
   }
   
-  // Fallback: search by priority order
+  // Fallback: search DEFAULT_CATS by priority
   for(const catId of CAT_PRIORITY){
-    const cat=CATS.find(c=>c.id===catId);
+    const cat=DEFAULT_CATS.find(c=>c.id===catId); // USE DEFAULT_CATS not CATS
     if(!cat||catId==='outros') continue;
     if((cat.keys||[]).some(k=>d.includes(k))) return catId;
   }
@@ -1136,7 +1137,7 @@ function renderHist(){
   Object.entries(byDate).forEach(([date,txs])=>{
     const daySum=sum(txs);
     html+=`<div style="padding:10px 0 4px;font-size:11px;color:var(--text3);display:flex;justify-content:space-between"><span>${fmtD(date)}</span><span class="mono">${fmt(daySum)}</span></div>`;
-    html+=txs.map(x=>{const c=getCat(x.catId);return`<div class="tx-item"><div class="tx-icon" style="background:${c.color}22">${c.icon}</div><div class="tx-info"><div class="tx-desc">${x.desc}</div><div class="tx-meta">${c.label}${x.subgroup?' · '+x.subgroup:''} ${PAYICONS[x.payment||'outros']||''}${x.banco?' · '+x.banco:''}${x.obs?' · '+x.obs:''}</div></div><div class="tx-amt">${fmt(x.val)}</div><button class="tx-edit-btn" onclick="openEditTx('${x.id}')">✏️</button><div class="tx-del" onclick="delTx('${x.id}')">✕</div></div>`}).join('');
+    html+=txs.map(x=>{const c=getCat(x.catId);return`<div class="tx-item"><div class="tx-icon" style="background:${c.color}22">${c.icon}</div><div class="tx-info"><div class="tx-desc">${x.desc}</div><div class="tx-meta">${c.label}${x.subgroup?' · '+x.subgroup:''} ${PAYICONS[x.payment||'outros']||''}${x.banco?' · '+x.banco:''}${x.obs?' · '+x.obs:''}</div></div><div class="tx-amt">${fmt(x.val)}</div><button class="tx-edit-btn" onclick="openEditTx('${x.id}')" style="padding:5px 9px;border-radius:8px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--sans);flex-shrink:0">✏️ Editar</button><div class="tx-del" onclick="delTx('${x.id}')">✕</div></div>`}).join('');
   });
   el.innerHTML=html;
 }
@@ -1396,11 +1397,12 @@ function openEditTx(id){
   document.getElementById('edit-pay').value=tx.payment||'outros';
   document.getElementById('edit-banco').value=tx.banco||'';
   document.getElementById('edit-obs').value=tx.obs||'';
-  // Populate cat select
+  // Populate cat select using DEFAULT_CATS for full list
+  const allCats=[...DEFAULT_CATS];
   const catSel=document.getElementById('edit-cat');
-  catSel.innerHTML=CATS.map(c=>`<option value="${c.id}">${c.icon} ${c.label}</option>`).join('');
+  catSel.innerHTML=allCats.map(c=>`<option value="${c.id}">${c.icon} ${c.label}</option>`).join('');
   catSel.value=tx.catId||'outros';
-  updateEditSubs(tx.subgroup||'');
+  updateEditSubs(tx.subgroup||'',tx.catId);
   openMov('mov-edit-tx');
 }
 </script>
