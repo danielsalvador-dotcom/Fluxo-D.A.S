@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Fin · DA">
+<meta name="apple-mobile-web-app-title" content="Fluxo D.A.S">
 <meta name="theme-color" content="#080810">
-<title>Financeiro · Daniel Aloisio</title>
+<title>Fluxo D.A.S</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -21,7 +21,7 @@
   --blue:#4a9eff;--blue-bg:rgba(74,158,255,.1);
   --sans:'DM Sans',system-ui,sans-serif;
   --mono:'DM Mono',monospace;
-  --tab-h:64px;
+  --tab-h:64px;--ctx-h:44px;
   --safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
 }
@@ -42,16 +42,7 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
 
 #ctx-bar{position:fixed;top:0;left:0;right:0;z-index:90;height:var(--ctx-h);background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;padding:0 14px;overflow-x:auto;scrollbar-width:none;padding-top:var(--safe-t)}
 #ctx-bar::-webkit-scrollbar{display:none}
-.ctx-chip{
-  flex-shrink:0;padding:6px 14px;border-radius:20px;
-  border:1px solid rgba(255,255,255,.18);
-  background:rgba(255,255,255,.07);
-  color:rgba(255,255,255,.55);
-  font-size:12px;font-weight:500;cursor:pointer;
-  font-family:var(--sans);white-space:nowrap;transition:all .2s;
-  min-height:32px;display:flex;align-items:center;
-}
-.ctx-chip.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+.ctx-chip{flex-shrink:0;padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--sans);white-space:nowrap;transition:all .15s}
 .ctx-chip.active{background:var(--acc);color:#fff;border-color:var(--acc)}
 
 .phdr{
@@ -169,10 +160,10 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
 /* REGISTRO INTELIGENTE */
 .reg-box{background:var(--bg1);border:1px solid var(--border2);border-radius:20px;padding:16px;margin-bottom:14px;position:relative}
 .reg-box.focus{border-color:var(--acc)}
-.reg-inp{width:100%;background:transparent;border:none;outline:none;font-family:var(--sans);font-size:16px;color:var(--text);resize:none;line-height:1.4;min-height:48px;max-height:100px;-webkit-appearance:none}
+.reg-inp{width:100%;background:transparent;border:none;outline:none;font-family:var(--sans);font-size:16px;color:var(--text);resize:none;line-height:1.4;min-height:48px;max-height:100px}
 .reg-inp::placeholder{color:var(--text3)}
-.reg-row{display:flex;align-items:center;gap:6px;margin-top:12px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.reg-tag{padding:5px 9px;border-radius:20px;font-size:11px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap;transition:all .15s}
+.reg-row{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+.reg-tag{padding:5px 11px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap;transition:all .15s}
 .reg-tag.sel{border-color:var(--acc);background:var(--acc-bg);color:var(--acc2)}
 .reg-send{margin-left:auto;width:40px;height:40px;border-radius:50%;border:none;background:var(--acc);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .15s}
 .reg-send:disabled{opacity:.3}
@@ -194,13 +185,7 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
 
 .mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:flex-end;backdrop-filter:blur(6px)}
 .mov.open{display:flex}
-.modal{
-  background:var(--bg1);
-  border-radius:24px 24px 0 0;
-  padding:20px 20px calc(20px + var(--safe-b));
-  width:100%;max-height:90vh;overflow-y:auto;
-  border-top:1px solid var(--border2);
-}
+.modal{background:var(--bg1);border-radius:24px 24px 0 0;padding:20px 20px calc(20px + var(--safe-b));width:100%;max-height:88vh;overflow-y:auto;border-top:1px solid var(--border2)}
 .mhandle{width:36px;height:4px;background:var(--bg3);border-radius:2px;margin:-6px auto 18px}
 .mtitle{font-size:18px;font-weight:600;margin-bottom:18px}
 
@@ -233,7 +218,21 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
 .cmp-val{font-size:12px;font-family:var(--mono);color:var(--text);min-width:72px;text-align:right;flex-shrink:0}
 .cmp-diff{font-size:11px;min-width:42px;text-align:right;flex-shrink:0;font-weight:600}
 
+/* ONBOARDING */
+#onboarding{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center}
+#onboarding.hidden{display:none}
+.ob-logo{font-size:52px;margin-bottom:16px}
+.ob-title{font-size:32px;font-weight:700;letter-spacing:-1px;margin-bottom:6px;background:linear-gradient(135deg,var(--acc2),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.ob-sub{font-size:14px;color:var(--text3);margin-bottom:36px;line-height:1.6}
+.ob-inp{width:100%;padding:16px 18px;border-radius:16px;border:1.5px solid var(--border2);background:var(--bg2);color:var(--text);font-family:var(--sans);font-size:17px;outline:none;text-align:center;transition:border-color .2s;margin-bottom:12px}
+.ob-inp:focus{border-color:var(--acc)}
+.ob-inp::placeholder{color:var(--text3)}
+.ob-btn{width:100%;padding:16px;border-radius:16px;border:none;background:var(--acc);color:#fff;font-family:var(--sans);font-size:16px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ob-btn:disabled{opacity:.35}
+.ob-hint{font-size:12px;color:var(--text3);margin-top:16px;line-height:1.6}
+
 /* EDIT TX MODAL */
+
 .edit-field{margin-bottom:12px}
 .edit-field label{display:block;font-size:12px;color:var(--text3);font-weight:500;margin-bottom:5px;letter-spacing:.02em}
 .edit-field input,.edit-field select,.edit-field textarea{width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-family:var(--sans);font-size:15px;outline:none;transition:border-color .15s;-webkit-appearance:none}
@@ -246,19 +245,27 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
 </head>
 <body>
 
+<div id="onboarding" style="position:fixed;inset:0;background:#080810;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center;transition:opacity .3s">
+  <div style="font-size:52px;margin-bottom:16px">💸</div>
+  <div style="font-size:32px;font-weight:700;letter-spacing:-1px;margin-bottom:6px;color:#a594ff">Fluxo D.A.S</div>
+  <div style="font-size:14px;color:#4a4a6a;margin-bottom:36px;line-height:1.6">Seu assistente financeiro pessoal.<br>Como podemos te chamar?</div>
+  <input id="ob-name" type="text" autocomplete="given-name" style="width:100%;padding:16px 18px;border-radius:16px;border:1.5px solid rgba(255,255,255,.13);background:#181826;color:#ededf5;font-family:inherit;font-size:17px;outline:none;text-align:center;margin-bottom:12px;box-sizing:border-box" placeholder="Seu nome" maxlength="30" oninput="obCheck()" onkeydown="if(event.key==='Enter')obStart()">
+  <button id="ob-btn" onclick="obStart()" disabled style="width:100%;padding:16px;border-radius:16px;border:none;background:#7c6aff;color:#fff;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;opacity:.35">Começar →</button>
+  <div style="font-size:12px;color:#4a4a6a;margin-top:16px;line-height:1.6">Seus dados ficam salvos apenas no seu celular.<br>Ninguém mais tem acesso.</div>
+</div>
 
+<div id="ctx-bar">
+  <button class="ctx-chip active" id="ctx-normal" onclick="setCtx('normal')">📊 Geral</button>
+  <button onclick="openMov('mov-trip')" style="flex-shrink:0;padding:5px 12px;border-radius:20px;border:1px dashed rgba(255,255,255,.15);background:none;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--sans)">＋ Viagem</button>
+</div>
 
 <!-- ══ DASHBOARD ══ -->
 <div class="page active" id="page-dash">
 <div class="pi">
   <div class="phdr">
-    <div class="phdr-eye">Financeiro · Daniel Aloisio</div>
+    <div class="phdr-eye" id="app-eyebrow">Fluxo D.A.S</div>
     <div class="phdr-title" id="dash-title">Bom dia 👋</div>
     <div class="phdr-sub" id="dash-sub"></div>
-    <div id="ctx-bar">
-      <button class="ctx-chip active" id="ctx-normal" onclick="setCtx('normal')">📊 Geral</button>
-      <button onclick="openMov('mov-trip')" style="flex-shrink:0;padding:6px 14px;border-radius:20px;border:1px dashed rgba(255,255,255,.2);background:none;color:rgba(255,255,255,.35);font-size:12px;cursor:pointer;font-family:var(--sans);white-space:nowrap;min-height:32px">＋ Viagem</button>
-    </div>
   </div>
 
   <!-- REGISTRO INTELIGENTE -->
@@ -266,12 +273,10 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
     <textarea class="reg-inp" id="reg-inp" placeholder="45 almoço · uber 32 pix · gastei 120 mercado ontem · 50 farmácia débito Nubank..." rows="2" oninput="onRegInp(this)" onkeydown="regKey(event)"></textarea>
     <div class="reg-preview" id="reg-preview"></div>
     <div class="reg-row">
-      <button class="reg-tag sel" id="pay-credito" onclick="selPay('credito')">💳 Créd.</button>
-      <button class="reg-tag" id="pay-debito" onclick="selPay('debito')">🏧 Déb.</button>
+      <button class="reg-tag sel" id="pay-credito" onclick="selPay('credito')">💳 Crédito</button>
+      <button class="reg-tag" id="pay-debito" onclick="selPay('debito')">🏧 Débito</button>
       <button class="reg-tag" id="pay-pix" onclick="selPay('pix')">⚡ Pix</button>
-      <button class="reg-tag" id="pay-dinheiro" onclick="selPay('dinheiro')">💵 Din.</button>
-      <button id="date-chip" onclick="openDatePicker()" style="padding:5px 10px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;font-family:var(--sans);white-space:nowrap;display:flex;align-items:center;gap:4px;flex-shrink:0">📅 <span id="date-chip-lbl">Hoje</span></button>
-      <input type="date" id="reg-date-inp" style="position:fixed;opacity:0;pointer-events:none;width:1px;height:1px;top:0;left:0" onchange="onDateChange(this.value)">
+      <button class="reg-tag" id="pay-dinheiro" onclick="selPay('dinheiro')">💵 Dinheiro</button>
       <button class="reg-send" id="reg-send" onclick="doReg()" disabled>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
@@ -457,6 +462,14 @@ body{font-family:var(--sans);color:var(--text);font-size:15px;line-height:1.5;ov
     <button class="btn btn-ghost" onclick="exportCSV()">📄 Exportar CSV</button>
     <div class="sep"></div>
     <button class="btn btn-danger" onclick="clearAll()">🗑️ Apagar tudo</button>
+  </div>
+
+  <div class="sdiv">👤 Conta</div>
+  <div class="card">
+    <div class="flex-between">
+      <div><div style="font-size:14px;font-weight:500" id="cfg-username-lbl">Meu nome</div><div style="font-size:12px;color:var(--text3)">Toque para trocar</div></div>
+      <button class="btn btn-ghost btn-sm" onclick="resetName()">Trocar nome</button>
+    </div>
   </div>
 
   <div class="sdiv">📱 Instalar como app</div>
@@ -677,13 +690,8 @@ function filterPer(arr,per){
 function parseDate(txt){
   const t=txt.toLowerCase();
   if(t.includes('hoje')) return today();
-  // dd/mm or dd/mm/yyyy
   const dmatch=txt.match(/(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?/);
-  if(dmatch){
-    const day=parseInt(dmatch[1]),mon=parseInt(dmatch[2]),yr=dmatch[3]?parseInt(dmatch[3]):new Date().getFullYear();
-    const d=new Date(yr,mon-1,day);
-    if(!isNaN(d.getTime())) return d.toISOString().slice(0,10);
-  }
+  if(dmatch){const day=parseInt(dmatch[1]),mon=parseInt(dmatch[2]),yr=dmatch[3]?parseInt(dmatch[3]):new Date().getFullYear();const d=new Date(yr,mon-1,day);if(!isNaN(d.getTime())) return d.toISOString().slice(0,10)}
   if(t.includes('anteontem')){const d=new Date();d.setDate(d.getDate()-2);return d.toISOString().slice(0,10)}
   if(t.includes('ontem')){const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10)}
   const days={segunda:1,terça:2,terca:2,quarta:3,quinta:4,sexta:5,sábado:6,sabado:6,domingo:0};
@@ -736,34 +744,6 @@ function detectCat(desc){
     if((cat.keys||[]).some(k=>d.includes(k))) return catId;
   }
   return 'outros';
-}
-
-function detectSub(desc,catId){
-  const d=desc.toLowerCase();
-  const cat=getCat(catId);
-  if(!cat||!cat.subs) return '';
-  // Map sub keywords
-  const subMap={
-    'alimentacao':{lanche:['salgado','coxinha','esfiha','esfirra','kibe','quibe','pastel','empada','risole','lanchinho','pão de queijo','pao de queijo','bauru','hot dog','cachorro quente'],delivery:['ifood','rappi','uber eats','ubereats','delivery','pedido'],padaria:['padaria','panificadora'],restaurante:['restaurante','almoço','almoco','jantar','janta','prato feito','pf','self service'],cafe:['café','cafe','cafeteria','starbucks'],bebidas:['cerveja','chopp','chope','suco','água','agua','refrigerante','drinks'],bar:['bar','boteco','botequim','pub']},
-    'mercado':{supermercado:['mercado','supermercado','atacadão','atacadao','assai','carrefour','extra'],feira:['feira','hortifruti','sacolão','sacolao','quitanda'],acougue:['açougue','acougue','peixaria','carne'],limpeza:['detergente','sabão','sabao','desinfetante','papel higienico','amaciante','produto de limpeza']},
-    'transporte':{publico:['metrô','metro','trem','ônibus','onibus','bilhete','cptm','brt'],app:['uber','99','cabify','indriver'],taxi:['taxi','táxi','mototaxi'],estacionamento:['estacionamento','zona azul'],pedagio:['pedágio','pedagio','sem parar','veloe']},
-    'veiculo':{combustivel:['gasolina','etanol','alcool','diesel','gnv','posto','combustivel','combustível'],lavagem:['lava rapido','lava rápido','lava jato','lavei o carro','lavagem','lavei a moto'],manutencao:['mecânico','mecanico','oficina','revisão','revisao','troca de oleo','pneu','borracharia','freio','alinhamento','bateria'],documentacao:['ipva','licenciamento','detran','despachante'],seguro:['seguro carro','seguro moto'],multas:['multa','radar']},
-    'saude':{farmacia:['farmácia','farmacia','drogaria','remédio','remedio','medicamento','dipirona','paracetamol','ibuprofeno'],consulta:['consulta','médico','medico','hospital','pronto socorro','upa'],exames:['exame','laboratório','laboratorio','hemograma','ultrassom','ressonância'],dentista:['dentista','odonto','aparelho dentário'],terapia:['terapia','psicólogo','psicologo','psiquiatra'],plano:['plano de saúde','plano de saude','convenio','convênio']},
-    'cuidados':{cabelo:['cabelo','cabeleireiro','salão','salao','barba','barbeiro','barbearia','corte'],unhas:['manicure','pedicure','unha','esmalte'],estetica:['sobrancelha','depilação','depilacao','limpeza de pele','massagem'],cosmeticos:['maquiagem','make','batom','perfume','shampoo','condicionador']},
-    'compras':{roupas:['roupa','roupas','camiseta','camisa','calça','calca','jeans','bermuda','shorts','blusa','moletom','jaqueta','casaco','vestido','saia','cueca','calcinha','meia','pijama','terno'],calcados:['sapato','sapatos','chinelo','chinela','havaianas','sandália','sandalia','bota','sapatilha','tênis','tenis'],acessorios:['bolsa','carteira','cinto','brinco','colar','pulseira','boné','bone','óculos de sol'],lojas:['shopping','loja','renner','riachuelo','zara','shein','shopee','mercado livre','amazon','magalu','americanas']},
-    'esporte':{academia:['academia','smart fit','smartfit','bluefit','bodytech','treino','musculação','musculacao','crossfit'],suplementos:['whey','creatina','suplemento','pré treino','pre treino','proteína','proteina'],equipamentos:['chuteira','raquete','bola','equipamento'],aulas:['pilates','yoga','natação','natacao','boxe','muay thai','jiu jitsu']},
-  };
-  const catSubs=subMap[catId];
-  if(catSubs){
-    for(const[sub,words]of Object.entries(catSubs)){
-      if(words.some(w=>d.includes(w))){
-        const cat=getCat(catId);
-        const match=cat.subs.find(s=>s.toLowerCase().includes(sub)||sub.includes(s.toLowerCase().split('/')[0].toLowerCase()));
-        return match||cat.subs[0]||'';
-      }
-    }
-  }
-  return (cat.subs||[])[0]||'';
 }
 
 function parseMsg(txt){
@@ -1032,7 +1012,10 @@ function renderQuickBtns(){
 function renderDash(){
   const trip=getTrip();const txs=ctxTXS();const m=startMonth();const now=new Date();
   const h=now.getHours();const g=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
-  const dt=document.getElementById('dash-title');if(dt)dt.textContent=trip?`${trip.emoji} ${trip.name}`:`${g}, Daniel 👋`;
+  const uname=localStorage.getItem('fin_username')||'';
+  const firstName=uname?uname.split(' ')[0]:'';
+  const greet=firstName?`${g}, ${firstName} 👋`:`${g} 👋`;
+  const dt=document.getElementById('dash-title');if(dt)dt.textContent=trip?`${trip.emoji} ${trip.name}`:greet;
   const ds=document.getElementById('dash-sub');if(ds)ds.textContent=trip?`${fmtD(trip.start)} → ${fmtD(trip.end)}`:now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
 
   // Score
@@ -1147,7 +1130,7 @@ function renderHist(){
   const az=document.getElementById('anomaly-zone');
   if(az){const anoms=detectAnomalies().filter(a=>a.type==='dup');az.innerHTML=anoms.length?`<div class="ibox ibox-danger" style="margin-bottom:10px">⚠️ ${anoms.length} gasto${anoms.length>1?'s':''} possivelmente duplicado${anoms.length>1?'s':''}. Verifique em Análise.</div>`:''}
   const el=document.getElementById('hist-list');if(!el)return;
-  if(!visible.length){el.innerHTML='<div class="empty">Nenhum gasto encontrado</div>';return}
+  if(!visible.length){el.innerHTML='<div class="empty">Nenhum gasto neste período<br><span style="font-size:12px">Registre seu primeiro gasto acima ↑</span></div>';return}
   const byDate={};visible.forEach(x=>{(byDate[x.date]=byDate[x.date]||[]).push(x)});
   let html='';
   Object.entries(byDate).forEach(([date,txs])=>{
@@ -1278,6 +1261,10 @@ function renderCoach(){
 // CONFIG
 // ══════════════════════════════════════════════
 function renderCfg(){
+  const n=localStorage.getItem('fin_username')||'–';
+  const ul=document.getElementById('cfg-username-lbl');
+  if(ul) ul.textContent='Olá, '+n;
+
   // Receitas
   const rel=document.getElementById('receitas-list');
   if(rel){const m=startMonth();const mes=RECS.filter(r=>r.date>=m);rel.innerHTML=mes.length?mes.slice().reverse().map(r=>`<div class="tx-item"><div class="tx-icon" style="background:rgba(34,208,122,.15)">${RECICONS[r.tipo]||'💰'}</div><div class="tx-info"><div class="tx-desc">${r.desc}</div><div class="tx-meta">${r.tipo} · ${fmtD(r.date)}</div></div><div class="tx-amt green">${fmt(r.val)}</div><div class="tx-del" onclick="delRec('${r.id}')">✕</div></div>`).join(''):'<div class="empty">Nenhuma receita este mês</div>'}
@@ -1320,7 +1307,7 @@ function exportXLSX(){
     XLSX.writeFile(wb,`fin_DA_${today()}.xlsx`);
   };document.head.appendChild(s);
 }
-function clearAll(){if(!confirm('⚠️ Apagar TODOS os dados?'))return;TXS=[];TRIPS=[];RECS=[];FIXAS=[];GOALS=[];CATS=JSON.parse(JSON.stringify(DEFAULT_CATS));CHIPS=['☕ café 8','🍽️ almoço 45','🚗 uber 32 pix','🛒 mercado 120','💊 farmácia 35'];['fin_txs','fin_trips','fin_recs','fin_fixas','fin_goals','fin_cats','fin_chips'].forEach(k=>localStorage.removeItem(k));CTX='normal';location.reload()}
+function clearAll(){if(!confirm('⚠️ Apagar TODOS os dados?'))return;TXS=[];TRIPS=[];RECS=[];FIXAS=[];GOALS=[];CATS=JSON.parse(JSON.stringify(DEFAULT_CATS));CHIPS=['☕ café 8','🍽️ almoço 45','🚗 uber 32 pix','🛒 mercado 120','💊 farmácia 35'];['fin_txs','fin_trips','fin_recs','fin_fixas','fin_goals','fin_cats','fin_chips','fin_username'].forEach(k=>localStorage.removeItem(k));CTX='normal';location.reload();}
 
 // ══════════════════════════════════════════════
 // NAVIGATION / MODAL
@@ -1331,24 +1318,72 @@ function closeMov(id){document.getElementById(id).classList.remove('open')}
 document.querySelectorAll('.mov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.mov.open').forEach(m=>m.classList.remove('open'))});
 
+
+// ══════════════════════════════════════════════
+// ONBOARDING
+// ══════════════════════════════════════════════
+function obCheck(){
+  const v = document.getElementById('ob-name').value.trim();
+  const btn = document.getElementById('ob-btn');
+  btn.disabled = !v;
+  btn.style.opacity = v ? '1' : '.35';
+}
+
+function obStart(){
+  const name = document.getElementById('ob-name').value.trim();
+  if(!name) return;
+  localStorage.setItem('fin_username', name);
+  const ob = document.getElementById('onboarding');
+  ob.style.opacity='0';
+  setTimeout(()=>{ob.style.display='none';},300);
+  applyUsername(name);
+  buildEmojiGrid();
+  renderCtxBar();
+  renderAll();
+}
+
+function applyUsername(name){
+  // Update eyebrow
+  const ey = document.getElementById('app-eyebrow');
+  if(ey) ey.textContent = 'Fluxo D.A.S · ' + name;
+  // Update page title
+  document.title = 'Fluxo D.A.S · ' + name;
+  // Update dash greeting area subtitle branding
+  window._username = name;
+}
+
+function resetName(){
+  if(!confirm('Trocar o nome vai reiniciar o app. Seus dados serão apagados. Continuar?')) return;
+  ['fin_txs','fin_trips','fin_recs','fin_fixas','fin_goals','fin_cats','fin_chips','fin_username'].forEach(k=>localStorage.removeItem(k));
+  location.reload();
+}
+
+function checkOnboarding(){
+  const name = localStorage.getItem('fin_username');
+  if(name){
+    const ob=document.getElementById('onboarding');
+    if(ob) ob.style.display = 'none';
+    applyUsername(name);
+    return true;
+  }
+  return false;
+  return false;
+}
+
 // ══════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════
 function init(){
-  // Migrate old cats if missing new categories
-  const hasNewCats = CATS.some(c=>c.id==='veiculo'||c.id==='cuidados'||c.id==='mercado');
-  if(!hasNewCats){
-    CATS = JSON.parse(JSON.stringify(DEFAULT_CATS));
-    saveCATS();
-    console.log('Categories migrated to new version');
-  }
+  const hasNewCats=CATS.some(c=>c.id==='veiculo'||c.id==='cuidados'||c.id==='mercado');
+  if(!hasNewCats){CATS=JSON.parse(JSON.stringify(DEFAULT_CATS));saveCATS();}
   buildEmojiGrid();renderCtxBar();renderAll();
+  // Update name in UI if already set
+  const n=localStorage.getItem('fin_username');if(n)applyUsername(n);
   // Alerta fixas
   const venc=FIXAS.filter(f=>f.dia===new Date().getDate()||f.dia===new Date().getDate()+1);
   if(venc.length)setTimeout(()=>showFeedback(`⏰ ${venc.map(f=>f.nome).join(', ')} vence${venc.length>1?'m':''} em breve`),1000);
 }
-document.addEventListener('DOMContentLoaded',init);
-
+document.addEventListener('DOMContentLoaded',()=>{ if(checkOnboarding()){ init(); } /* else: onboarding shown, obStart calls init */ });
 // ══════════════════════════════════════════════
 // EDIT TX
 // ══════════════════════════════════════════════
@@ -1368,44 +1403,7 @@ function openEditTx(id){
   updateEditSubs(tx.subgroup||'');
   openMov('mov-edit-tx');
 }
-
-function updateEditSubs(selSub){
-  const catId=document.getElementById('edit-cat').value;
-  const cat=getCat(catId);
-  const subSel=document.getElementById('edit-sub');
-  subSel.innerHTML='<option value="">Sem subcategoria</option>'+(cat.subs||[]).map(s=>`<option value="${s}">${s}</option>`).join('');
-  if(selSub!==undefined) subSel.value=selSub||'';
-}
-
-function saveEditTx(){
-  const id=document.getElementById('edit-tx-id').value;
-  const idx=TXS.findIndex(x=>x.id===id);if(idx<0)return;
-  const val=parseFloat(document.getElementById('edit-val').value)||0;
-  if(!val){alert('Informe o valor');return}
-  TXS[idx]={
-    ...TXS[idx],
-    desc:document.getElementById('edit-desc').value.trim()||TXS[idx].desc,
-    val:val,
-    date:document.getElementById('edit-date').value||today(),
-    catId:document.getElementById('edit-cat').value,
-    subgroup:document.getElementById('edit-sub').value,
-    payment:document.getElementById('edit-pay').value,
-    banco:document.getElementById('edit-banco').value.trim(),
-    obs:document.getElementById('edit-obs').value.trim(),
-  };
-  saveTXS();closeMov('mov-edit-tx');renderAll();
-  showFeedback('✅ Lançamento atualizado!');
-}
-
-function deleteEditTx(){
-  const id=document.getElementById('edit-tx-id').value;
-  if(!confirm('Excluir este lançamento?'))return;
-  TXS=TXS.filter(x=>x.id!==id);
-  saveTXS();closeMov('mov-edit-tx');renderAll();
-  showFeedback('🗑️ Lançamento excluído');
-}
 </script>
-
 <!-- MODAL: EDIT TX -->
 <div class="mov" id="mov-edit-tx"><div class="modal">
   <div class="mhandle"></div>
